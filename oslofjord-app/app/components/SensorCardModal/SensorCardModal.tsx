@@ -10,7 +10,7 @@ function SensorCardModal(props: ModalProps) {
   return (
     // Main modal : inspired by Flowbite's modal https://flowbite.com/docs/components/modal/
     <div id="default-modal" className=" justify-center items-center">
-        <div className="relative p-4 w-full max-w-2xl max-h-full ">
+        <div className="relative p-4 w-full max-w-2xl ">
             {/*<!-- Modal content -->*/}
             <div className="relative bg-slate-100 rounded-lg shadow-sm shadow-neutral-200 border border-slate-400 ">
                 {/*<!-- Modal header -->*/}

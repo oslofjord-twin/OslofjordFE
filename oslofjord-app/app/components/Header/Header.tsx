@@ -15,7 +15,7 @@ function Header(){
         <Link href="/" className='mr-4 pr-2 absolute'>  
             <Image
                 src="/static/ofdt5.svg"
-                 height={0}
+                height={0}
                 width={0}
                 style={{width:'86px', height: "auto" }}
                 alt="Oslofjord DT"

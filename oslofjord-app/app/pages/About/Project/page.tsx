@@ -74,15 +74,7 @@ const Project = () => {
                             vehicula condimentum lorem imperdiet a. Donec in aliquet tellus. Donec id luctus ipsum. Vivamus ut hendrerit justo, ut sollicitudin nulla. 
                             Integer malesuada malesuada massa eu dictum. Sed hendrerit libero a sodales consequat. Suspendisse potenti.
                         </p>
-                        <Image
-                            className=" object-contain w-auto h-auto mt-16 rounded-lg hover:rounded-lg shadow-green-900/30 hover:shadow-indigo-900/40"
-                            src="/static/depth_example.png"
-                            width={800}
-                            height={100}
-                            loading="lazy"
-                            alt="depth profile"
-                        />
-                        <p className="text-slate-100 font-light pt-2 "> Depth profile for the geographical position of the lander (example) </p>
+                  
                     </div>
                 </div>
             </div>

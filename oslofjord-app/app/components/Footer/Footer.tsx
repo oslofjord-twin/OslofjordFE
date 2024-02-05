@@ -6,7 +6,7 @@ function Footer() {
   return (
     <footer className='footer w-screen mt-4 bg-slate-200'>
         <div className='flex flex-col'>
-          <Link href="https://www.mn.uio.no/ifi/" className='font-small bg-clip-text'>
+          <Link href="https://www.mn.uio.no/ifi/" className='font-small bg-clip-text w-fit h-fit'>
             <Image
                 src="/static/uiologo.svg"
                 height={0}
