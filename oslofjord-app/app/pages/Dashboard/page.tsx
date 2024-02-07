@@ -4,6 +4,7 @@ import SensorInfoCard from "@/app/components/SensorInfoCard";
 import dynamic from "next/dynamic"
 import Dropdown from "@/app/components/Dropdown";
 
+
 // Next.js combined with leaflet can be problematic, so we need to have dynamic loading
 // solution --> https://stackoverflow.com/questions/74289687/leaflet-implementation-on-next-js-13
 
@@ -19,7 +20,7 @@ const Dashboard = () => {
     // written by user in input box
     const [writtenPosition, setWrittenPosition] = useState( landerPosition )
     // species chosen from dropdown menu
-    const [chosenSpecies, setChosenSpecies] = useState({item: '', id: 0})
+    const [chosenSpecies, setChosenSpecies] = useState({item: 'Search for species ...', id: 0})
     // which tab to display
     const [tabOne, setTabOne] = useState(true)
 
@@ -51,8 +52,7 @@ const Dashboard = () => {
         
                 {tabOne && 
                     <div className="grid grid-cols-4 gap-4 m-4 place-content-center">
-                    <Dropdown setChosenSpecies={setChosenSpecies}/>
-                    <p className='static h-16 rounded-md  border border-slate-600 col-start-2 col-span-1 w-52 bg-slate-100 p-4 ml-12 place-self-start'> Chosen species is {chosenSpecies.item} with id: {chosenSpecies.id} </p>
+                    <Dropdown chosenSpecies={chosenSpecies} setChosenSpecies={setChosenSpecies}/>
                     <input type="text" placeholder={clickedPosition.lat.toPrecision(8).toString() + ", " + clickedPosition.lng.toPrecision(8).toString()} 
                         className='static h-16 col-start-3 col-span-1 w-fit bg-slate-100 p-4 place-self-start placeholder-gray-500 focus:placeholder-opacity-20'>
                     </input>
@@ -68,7 +68,8 @@ const Dashboard = () => {
             <FjordMap geoData={landerPosition} pos={clickedPosition} setPos={setClickedPosition}></FjordMap>
         
             {/*<button className=" p-4 mt-4 mb-4 rounded border-slate-300 bg-slate-100 hover:bg-blue-400 w-fit h-fit"> Show results</button>*/}
-
+            
+        
             </div>
 
 

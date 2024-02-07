@@ -17,11 +17,11 @@ const speciesList = [
 ];
 
 interface DropdownProps{
+    chosenSpecies : { item: string; id: number; }
     setChosenSpecies: Dispatch<SetStateAction<{item: string, id: number}>>
-
 }
 
-function Dropdown({setChosenSpecies}: DropdownProps) {
+function Dropdown({chosenSpecies, setChosenSpecies}: DropdownProps) {
 
     const [dropdown, setDropdown] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
@@ -48,7 +48,7 @@ function Dropdown({setChosenSpecies}: DropdownProps) {
             <div className=' flex flex-row w-80 h-fit bg-slate-100 rounded-md justify-center p-4 border border-slate-600'>
                 <div className='relative w-60 h-30 bg-slate-100 rounded-md '>
                     <SearchIcon fontSize='large' className='absolute inset-y-0 left-0 text-slate-500 flex items-center pl-2'></SearchIcon>
-                    <input type="search" id="input-field" value={searchQuery} onChange={searchHandler} onClick={()=> setDropdown(true)} placeholder="Search for species..." className="block w-full text-center text-sm text-slate-700 border border-slate-300 rounded-lg bg-slate-50 focus:ring-blue-500 focus:border-blue-500"/>
+                    <input type="search" id="input-field" value={searchQuery} onChange={searchHandler} onClick={()=> setDropdown(true)} placeholder={`${chosenSpecies.item}`} className="block w-full text-center text-sm text-slate-700 border border-slate-300 rounded-lg bg-slate-50 focus:ring-blue-500 focus:border-blue-500"/>
                 </div>
                 <ArrowDropDownIcon onClick={handleDropdown} fontSize="large" className='place-self-end ml-2 text-slate-600 cursor-pointer hover:text-slate-900'/>
 

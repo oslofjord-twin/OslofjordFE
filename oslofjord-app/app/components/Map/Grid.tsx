@@ -1,45 +1,47 @@
-import React, { useState } from 'react'
-import GridRectangle from './GridRectangle';
-import { Popup, useMapEvents } from 'react-leaflet';
+import React  from 'react'
+import { Marker, Popup, useMapEvents } from 'react-leaflet';
+import MapRectangle from './MapRectangle';
 
 // returns a grid of clickable squares that are to be placed as a layer on top of the leaflet-map
 
 function Grid({ pos, setPos }: any) {
-    // To retrieve the bounds of the clicked rectangle object 
-    const [currentBounds, setCurrentBounds] = useState([[59.619587,59.769106],[10.511458, 10.7114]])
-    
-    // minimum and maximum latitude and longitude values to create the grid
-    const minLatitude = 59.619587;
-    const minLongitude = 10.511458;  
-    const maxLatitude = 59.769106;
-    const maxLongitude = minLongitude + 2*(maxLatitude - minLatitude); 
+
+    // Format --> [[minLat, minLng],[maxLat, maxLng]]
+    const exampleBounds = [[59.701165, 10.578201],[59.721165, 10.598201]]
 
     function MapEventsHandler()  {
-        
         const map = useMapEvents({
         click: (loc) => {
-            if ( loc.latlng.lat > minLatitude && loc.latlng.lat < maxLatitude 
-                && loc.latlng.lng > minLongitude && loc.latlng.lng < maxLongitude) {
-                setPos(loc.latlng)
-                setTimeout(() => { 
-                    map.flyTo(loc.latlng, map.getZoom())
-                }, 100);
-            }     
+            setPos(loc.latlng)
+            setTimeout(() => { 
+                map.flyTo(loc.latlng, map.getZoom())
+            }, 100);
+            console.log(loc.latlng)
         },
         })
-        console.log('current bounds for rectangle:', currentBounds)
+    
         return pos === null ? null : (
-            <Popup>
-                <h1 className='font-semibold'> Graph of sensor data last 24hrs </h1> <br/>
-                {/* Insert a graph here */}
-             </Popup>
+            <Marker position={pos}>
+                <Popup>
+                    <h1 className='font-semibold'> Graph of sensor data last 24hrs </h1> <br/>
+                    {/* Insert a graph here */}
+                </Popup>
+            </Marker>
+       
         )
     }
 
-    // Creates values for the bounds of rectangles and puts it in a list. 
+    // CURRENTLY NOT IN USE
+    // Creates values for the bounds of rectangles and puts it in a list.
     function CalculateSquares() {
 
-        let listOfBounds : any = new Array()  
+        let listOfBounds : any = new Array()
+
+        // minimum and maximum latitude and longitude values to create the grid
+        const minLatitude = 59.619587;
+        const minLongitude = 10.511458;  
+        const maxLatitude = 59.769106;
+        const maxLongitude = minLongitude + 2*(maxLatitude - minLatitude);   
   
         const numColumns = 10;
         const numRows = 10;
@@ -71,8 +73,7 @@ function Grid({ pos, setPos }: any) {
 
     return (
         <div>
-            {CalculateSquares().map((cellBounds: any, index: React.Key | null | undefined) => 
-                <GridRectangle key={index} bounds={cellBounds} pos={pos} setPos={setPos} setCurrentBounds={setCurrentBounds}/>)}
+            <MapRectangle pos={pos} setPos={setPos} bounds={exampleBounds}/>
             <MapEventsHandler></MapEventsHandler>
         </div>
     
