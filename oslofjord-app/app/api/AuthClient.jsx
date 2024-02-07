@@ -6,6 +6,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@ap
 import { setContext } from "@apollo/client/link/context";
 import { useAuth0 } from '@auth0/auth0-react';
 import ApiCallExample from './ApiCallExample';
+import Dashboard from '../pages/Dashboard/page';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,7 +29,7 @@ const createApolloClient = () => {
   })
 };
     
-const AuthClient = ({ children }) => {
+const AuthClient = ()=> {
   const { loading, logout } = useAuth0();
   if (loading) {
     <div>Loading...</div>
@@ -38,7 +39,7 @@ const AuthClient = ({ children }) => {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <ApiCallExample/>
+      <Dashboard/>
     </ApolloProvider>
   )
 }

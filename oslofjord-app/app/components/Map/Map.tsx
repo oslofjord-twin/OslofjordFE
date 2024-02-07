@@ -1,5 +1,5 @@
 "use client";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import { GET_INTERSECTION } from "../../api/gqlQueries"
 import React from 'react';
 import { MapContainer, TileLayer, Popup, FeatureGroup, Marker, useMapEvents } from "react-leaflet";
@@ -56,12 +56,18 @@ export default function Map({ geoData, pos, setPos }: any) {
 
     // Handles click on the map and returns a marker and a popup window when clicked
     function MapEventsHandler()  {
+        const [lp, {loading, error, data }] = useLazyQuery(GET_INTERSECTION);
+            
         const map = useMapEvents({
         click: (loc) => {
             setPos(loc.latlng)
             setTimeout(() => { 
                 map.flyTo(loc.latlng, map.getZoom())
             }, 100);
+            () => lp({ variables:  { point: { type: "Point", coordinates: [10.62, 59.65] }}});
+            
+            console.log(data);
+            
             console.log(loc.latlng)
         },
         })

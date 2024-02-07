@@ -5,9 +5,7 @@ import AuthClient from './api/AuthClient';
 export default function Home() {
   return (
     <main>
-      <AuthClient>
-        <Dashboard/>
-      </AuthClient>
+      <AuthClient/>
       {/*<BottomNav/> ? show only on mobile; alt - MUI drawer*/}
     </main>
   )

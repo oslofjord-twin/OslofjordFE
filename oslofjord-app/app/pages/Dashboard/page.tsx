@@ -1,15 +1,17 @@
 'use client';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SensorInfoCard from "@/app/components/SensorInfoCard";
 import dynamic from "next/dynamic"
 import Dropdown from "@/app/components/Dropdown";
+import { useLazyQuery, useQuery } from "@apollo/client";
+import { GET_INTERSECTION } from "@/app/api/gqlQueries";
 
 
 // Next.js combined with leaflet can be problematic, so we need to have dynamic loading
 // solution --> https://stackoverflow.com/questions/74289687/leaflet-implementation-on-next-js-13
 
 const FjordMap = dynamic(() => import("@/app/components/Map/index"), { 
-    ssr: false,
+    ssr: false,  
 })
 
 const Dashboard = () => {
@@ -23,6 +25,10 @@ const Dashboard = () => {
     const [chosenSpecies, setChosenSpecies] = useState({item: 'Search for species ...', id: 0})
     // which tab to display
     const [tabOne, setTabOne] = useState(true)
+
+    
+
+    
 
     return (
         <div className="grid grid-flow-row mt-24 mb-28 w-screen place-content-center">
