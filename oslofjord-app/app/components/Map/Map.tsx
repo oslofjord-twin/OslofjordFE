@@ -1,18 +1,20 @@
 "use client";
 import { useQuery } from "@apollo/client";
 import { GET_INTERSECTION } from "../../api/gqlQueries"
-import React from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Popup, FeatureGroup, Marker, useMapEvents } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
 import 'leaflet-defaulticon-compatibility';
 import MapRectangle from './MapRectangle';
+import apiCall from "@/app/api/apiCall";
 
 // ^ Compatibility to retrieve leaflet icons https://github.com/ghybs/leaflet-defaulticon-compatibility
 
 // Geodata, pos and setPos from Dashboard.tsx
 export default function Map({ geoData, pos, setPos }: any) {
-    const exampleBounds = [[59.701165, 10.578201],[59.721165, 10.598201]]
+    const exampleBounds : number[][] = [[59.701165, 10.578201],[59.721165, 10.598201]]
+    const [boundaries, setBoundaries] = useState<any | null>(exampleBounds)
 
     // CURRENTLY NOT IN USE
     // Creates values for the bounds of rectangles and puts it in a list.
@@ -56,8 +58,10 @@ export default function Map({ geoData, pos, setPos }: any) {
 
     // Handles click on the map and returns a marker and a popup window when clicked
     function MapEventsHandler()  {
+        const coordinates = apiCall()
         const map = useMapEvents({
         click: (loc) => {
+            setBoundaries(coordinates)
             setPos(loc.latlng)
             setTimeout(() => { 
                 map.flyTo(loc.latlng, map.getZoom())
@@ -66,13 +70,14 @@ export default function Map({ geoData, pos, setPos }: any) {
         },
         })
         return pos === null ? null : (
+
             <Marker position={pos}>
                 <Popup>
                     <h1 className='font-semibold'> Graph of sensor data last 24hrs </h1> <br/>
                     {/* Insert a graph here */}
                 </Popup>
             </Marker>
-       
+      
         )
     }
 
@@ -84,7 +89,8 @@ export default function Map({ geoData, pos, setPos }: any) {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <MapEventsHandler></MapEventsHandler>
-            <MapRectangle pos={pos} setPos={setPos} bounds={exampleBounds}/>
+            <MapRectangle pos={pos} setPos={setPos} bounds={boundaries}/>
+            
         </MapContainer>
     );
 };

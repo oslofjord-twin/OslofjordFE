@@ -5,7 +5,6 @@ interface RectangleProps {
     bounds: any
     setPos: any
     pos: any
-  
 }
 
 // Single rectangle for grid on the map, based on react-leaflet Rectangle. 
@@ -22,7 +21,7 @@ function MapRectangle(props: RectangleProps) {
         pathOptions={ isHovered? {fillColor: 'red', fillOpacity: .4, color:'red', opacity: .4} : {fillColor:'red', fillOpacity: .2, color:'red', opacity: .4}}
         eventHandlers={{
             click: () => {
-                //console.log("corners: minLat", props.bounds[0][0], " minLng ", props.bounds[0][1], " maxLat", props.bounds[1][0], " maxLng", props.bounds[1][1])
+                console.log("corners: minLat", props.bounds[0][0], " minLng ", props.bounds[0][1], " maxLat", props.bounds[1][0], " maxLng", props.bounds[1][1])
                 setIsClicked(!isClicked)
             },
             mouseover: () => {
