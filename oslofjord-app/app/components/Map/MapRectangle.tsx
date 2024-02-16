@@ -2,9 +2,7 @@ import React, {useState } from 'react'
 import { Rectangle } from 'react-leaflet'
 
 interface RectangleProps {
-    bounds: any
-    setPos: any
-    pos: any
+    data: any
 }
 
 // Single rectangle for grid on the map, based on react-leaflet Rectangle. 
@@ -13,15 +11,16 @@ interface RectangleProps {
 function MapRectangle(props: RectangleProps) {
     const[isHovered, setIsHovered] = useState(false)
     const[isClicked, setIsClicked] = useState(false)
-
+    const coordinates : any = props.data.grid[0].geom.coordinates[0] 
+    const boundaries : any = [[coordinates[0][1], coordinates[0][0]], [coordinates[1][1], coordinates[2][0]]]    
+    
   return (
     <Rectangle 
-        //takes latitude and longitude of position to center, and the size to create the square
-        bounds={props.bounds}
+        bounds={boundaries}
         pathOptions={ isHovered? {fillColor: 'red', fillOpacity: .4, color:'red', opacity: .4} : {fillColor:'red', fillOpacity: .2, color:'red', opacity: .4}}
         eventHandlers={{
             click: () => {
-                console.log("corners: minLat", props.bounds[0][0], " minLng ", props.bounds[0][1], " maxLat", props.bounds[1][0], " maxLng", props.bounds[1][1])
+                console.log("Rectangle boundaries: minLat", boundaries[0][0], " minLng ", boundaries[0][1], " maxLat", boundaries[1][0], " maxLng", boundaries[1][1])
                 setIsClicked(!isClicked)
             },
             mouseover: () => {

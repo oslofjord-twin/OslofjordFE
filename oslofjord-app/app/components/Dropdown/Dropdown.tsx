@@ -54,9 +54,7 @@ function Dropdown({chosenSpecies, setChosenSpecies}: DropdownProps) {
                     <input type="search" id="input-field" value={searchQuery} onChange={searchHandler} onClick={()=> {setDropdown(true); setSearchQuery(''); setFilteredSpecies(speciesList);}} placeholder={'Search for species ...'} className="block w-full text-center text-sm text-slate-700 border border-slate-300 rounded-lg bg-slate-50 focus:ring-blue-500 focus:border-blue-500"/>
                 </div>
                 <ArrowDropDownIcon onClick={handleDropdown} fontSize="large" className='place-self-end ml-2 text-slate-600 cursor-pointer hover:text-slate-900'/>
-
             </div>
-
             {dropdown &&
             <div className=' bg-slate-100 w-80 max-h-56 min-h-fit overflow-y-scroll mt-2 rounded scroll-smooth cursor-pointer border border-slate-600' id="dropdownmenu">
                 <ul id={'speciesList'} className=' divide-y divide-slate-400 cursor-pointer ' >
@@ -67,9 +65,7 @@ function Dropdown({chosenSpecies, setChosenSpecies}: DropdownProps) {
                 </ul>
             </div>  
             }
-     
-        </div>
-        
+        </div>   
 )}
 
 export default Dropdown; 

@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/Graph/index.js", "app/components/Graph/Statistics.jsx", "app/components/Graph/Statistics.js", "app/api/apiCall.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/Graph/index.js", "app/components/Graph/Statistics.jsx", "app/components/Graph/Statistics.js", "app/api/apiCall.tsx"],
   "exclude": ["node_modules"]
 }
