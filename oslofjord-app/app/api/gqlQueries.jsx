@@ -41,3 +41,11 @@ export const GET_INTERSECTION = gql`
     }
   }
 `;
+
+export const GET_SPECIES = gql`
+  query Species{
+    species {
+      name
+    }
+  }
+`;

@@ -2,6 +2,8 @@ import React  from 'react'
 import { Marker, Popup, useMapEvents } from 'react-leaflet';
 import MapRectangle from './MapRectangle';
 
+
+//CURRENTLY NOT IN USE
 // returns a grid of clickable squares that are to be placed as a layer on top of the leaflet-map
 
 function Grid({ pos, setPos }: any) {
@@ -73,7 +75,7 @@ function Grid({ pos, setPos }: any) {
 
     return (
         <div>
-            <MapRectangle pos={pos} setPos={setPos} bounds={exampleBounds}/>
+            <MapRectangle data={exampleBounds}/>
             <MapEventsHandler></MapEventsHandler>
         </div>
     

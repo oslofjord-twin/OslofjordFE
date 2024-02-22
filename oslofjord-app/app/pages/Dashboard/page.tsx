@@ -20,9 +20,11 @@ const Dashboard = () => {
     // written by user in input box
     const [writtenPosition, setWrittenPosition] = useState( landerPosition )
     // species chosen from dropdown menu
-    const [chosenSpecies, setChosenSpecies] = useState({item: 'Search for species ...', id: 0})
+    const [chosenSpecies, setChosenSpecies] = useState({item: 'Search for species ...'}) // , id: 0})
     // which tab to display
     const [tabOne, setTabOne] = useState(true)
+
+    console.log('chosen species is', chosenSpecies)
 
     return (
         <div className="grid grid-flow-row mt-24 mb-28 w-screen place-content-center">
@@ -49,10 +51,9 @@ const Dashboard = () => {
             </div>
             
             <div className=" block relative mt-12 mb-8 w-full">
-        
                 {tabOne && 
                     <div className="grid grid-cols-4 gap-4 m-4 place-content-center">
-                    <Dropdown chosenSpecies={chosenSpecies} setChosenSpecies={setChosenSpecies}/>
+                    <Dropdown setChosenSpecies={setChosenSpecies}/>
                     <input type="text" placeholder={clickedPosition.lat.toPrecision(8).toString() + ", " + clickedPosition.lng.toPrecision(8).toString()} 
                         className='static h-16 col-start-3 col-span-1 w-fit bg-slate-100 p-4 place-self-start placeholder-gray-500 focus:placeholder-opacity-20'>
                     </input>
@@ -68,7 +69,7 @@ const Dashboard = () => {
             <FjordMap geoData={landerPosition} pos={clickedPosition} setPos={setClickedPosition}></FjordMap>
         
             {/*<button className=" p-4 mt-4 mb-4 rounded border-slate-300 bg-slate-100 hover:bg-blue-400 w-fit h-fit"> Show results</button>*/}
-            
+    
         
             </div>
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from 'react';
+import React from 'react';
 import { MapContainer, TileLayer, Popup, Marker, useMapEvents } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
@@ -12,8 +12,9 @@ import { GET_INTERSECTION } from '@/app/api/gqlQueries';
 //export const bounds : any = makeVar([])
 // ^ Compatibility to retrieve leaflet icons https://github.com/ghybs/leaflet-defaulticon-compatibility
 
-// Geodata, pos and setPos from Dashboard.tsx
+// geoData, pos and setPos are props from Dashboard.tsx
 export default function Map({ geoData, pos, setPos }: any) {
+    // Loads data from the API to make the grid rectangle using the GET_INTERSECTION query
     const { loading, error, data } = useQuery(GET_INTERSECTION, {
         variables:  { point: { type: "Point", coordinates: [pos.lng, pos.lat] }},  //set which query to run here with variables
     })
@@ -84,7 +85,6 @@ export default function Map({ geoData, pos, setPos }: any) {
     }
 
     return (
-
         <MapContainer className=' -z-0 mt-4 place-self-center' center={[geoData.lat, geoData.lng]} zoom={11} maxZoom={18}
             minZoom={6} style={{ height: "500px", width: "1200px"}}>
             <TileLayer
@@ -96,7 +96,6 @@ export default function Map({ geoData, pos, setPos }: any) {
                 <MapRectangle data={data}/>
             }
         </MapContainer>
-        
     );
 };
 
