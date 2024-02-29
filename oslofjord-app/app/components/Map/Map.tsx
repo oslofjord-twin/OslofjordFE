@@ -1,6 +1,6 @@
 "use client";
-import React from 'react';
-import { MapContainer, TileLayer, Popup, Marker, useMapEvents } from "react-leaflet";
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Popup, Marker, useMapEvents, CircleMarker, Circle } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
 import 'leaflet-defaulticon-compatibility';
@@ -12,16 +12,20 @@ import { GET_INTERSECTION } from '@/app/api/gqlQueries';
 //export const bounds : any = makeVar([])
 // ^ Compatibility to retrieve leaflet icons https://github.com/ghybs/leaflet-defaulticon-compatibility
 
-// geoData, pos and setPos are props from Dashboard.tsx
-export default function Map({ geoData, pos, setPos }: any) {
+// geoData, clickedPos and setClickedPos are props from Dashboard.tsx
+export default function Map({ geoData, clickedPos, setClickedPos }: any) {
+    // grid border values to ensure that the clicked position is within the grid that contains data
+    const grid_lng = [10.00, 11.00]
+    const grid_lat = [59.00, 59.95]
+    const landerPosition = { lat: 59.658233, lng: 10.624583}
+
     // Loads data from the API to make the grid rectangle using the GET_INTERSECTION query
     const { loading, error, data } = useQuery(GET_INTERSECTION, {
-        variables:  { point: { type: "Point", coordinates: [pos.lng, pos.lat] }},  //set which query to run here with variables
+        variables:  { point: { type: "Point", coordinates: [clickedPos.lng, clickedPos.lat] }},  //set which query to run here with variables
     })
     if (error) {
     console.error(error);
     }
-    
 
     // CURRENTLY NOT IN USE
     // Creates values for the bounds of rectangles and puts it in a list.
@@ -64,18 +68,20 @@ export default function Map({ geoData, pos, setPos }: any) {
     }
 
       
-    // Handles click on the map and returns a marker and a popup window when clicked
+    // Handles any click on the map that is within the grid borders and returns a marker and a popup window when clicked
     function MapEventsHandler() {
         const map = useMapEvents({
         click: (loc) => {
-            setPos(loc.latlng)
+            if (loc.latlng.lng > grid_lng[0] && loc.latlng.lng < grid_lng[1] && loc.latlng.lat > grid_lat[0] && loc.latlng.lat < grid_lat[1]) {
+                setClickedPos(loc.latlng)
+            }
             map.flyTo(loc.latlng, map.getZoom())
             console.log('current location: ', loc.latlng)
         },
         })
         
-        return pos === null ? null : (
-            <Marker position={pos}>
+        return clickedPos === null ? null : (
+            <Marker position={clickedPos}>
                 <Popup>
                     <h1 className='font-semibold'> Graph of sensor data last 24hrs </h1> <br/>
                     {/* Insert a graph here */}
@@ -91,6 +97,15 @@ export default function Map({ geoData, pos, setPos }: any) {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+            <Circle
+                center={landerPosition}
+                pathOptions={{ fillColor: 'blue' , color: 'blue'}}
+                radius={150}>
+                <Popup>
+                    <h1 className='font-semibold'> Position of lander </h1> <br/>
+                    {/* Insert a graph here */}
+                </Popup>
+            </Circle>
             <MapEventsHandler></MapEventsHandler>
             {data &&
                 <MapRectangle data={data}/>
@@ -98,6 +113,5 @@ export default function Map({ geoData, pos, setPos }: any) {
         </MapContainer>
     );
 };
-
 
 
