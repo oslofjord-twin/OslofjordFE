@@ -6,6 +6,7 @@ import Dropdown from "@/app/components/Dropdown";
 import { ApolloProvider } from '@apollo/client';
 import client from "@/app/api/apolloClient";
 import InfoIcon from '@mui/icons-material/Info';
+import { GET_SPECIES } from "@/app/api/gqlQueries";
 // Next.js combined with leaflet can be problematic, so we need to have dynamic loading
 // solution --> https://stackoverflow.com/questions/74289687/leaflet-implementation-on-next-js-13
 
@@ -22,7 +23,9 @@ const Dashboard = () => {
     // written by user in input box
     const [writtenPosition, setWrittenPosition] = useState( landerPosition )
     // species chosen from dropdown menu
-    const [chosenSpecies, setChosenSpecies] = useState({item: 'Search for species ...'}) // , id: 0})
+    const [chosenSpecies, setChosenSpecies] = useState({item: ''}) // , id: 0})
+    const [chosenQuestion, setChosenQuestion] = useState({item: ''}) 
+    const temporaryQuestionlist = ['Is this a good place for']
     // which tab to display
     //const [tabOne, setTabOne] = useState(true)
 
@@ -32,25 +35,27 @@ const Dashboard = () => {
         <ApolloProvider client={client()}>
         <div className="grid grid-flow-row mt-12 mb-28 w-screen place-content-center">
             <p className=" text-slate-100 font-semibold text-2xl md:text-3xl place-self-center pt-4 mt-4"> Dashboard </p> 
-            <div className=" pb-12 mb-12">
+            <div className=" pb-12 mb-12 items-center" >
                 <div className=" block relative pb-4 mt-12 mb-8 w-full">
                 {/*tabOne && */}
-                    <div className="grid grid-cols-4 gap-4 m-4 place-content-center">
-                    <Dropdown setChosenSpecies={setChosenSpecies}/>
+                    <div className="grid grid-rows-4 xl:grid-cols-4 p-2 place-items-center xl:place-items-baseline bg-slate-100 h-60 xl:h-20 w-2/3 mx-auto xl:w-full rounded-lg">
+                    
+                    <Dropdown styling='absolute top-3 z-20 xl:z-30' temporary={temporaryQuestionlist} query={GET_SPECIES} placeholder={'Choose a question ...'} setChosen={setChosenQuestion}/>
+                    <Dropdown styling='absolute top-20 xl:top-3 z-10 xl:left-96 xl:ml-8' temporary={['null']} query={GET_SPECIES} placeholder={'Search for species ...'} setChosen={setChosenSpecies}/>
                     {/* 
                     <input type="text" placeholder={clickedPos.lat.toPrecision(8).toString() + ", " + clickedPos.lng.toPrecision(8).toString()} 
                         className='static h-16 col-start-3 col-span-1 w-fit bg-slate-100 p-4 place-self-start placeholder-gray-500 focus:placeholder-opacity-20'>
                     </input>
                     */}
-                    <button onClick={() => setClickedPos({ lat: 59.73020, lng: 10.20303 })} 
-                        className="col-start-4 col-span-1 place-self-start w-24 rounded bg-slate-100 p-4 "> Go </button>
+                    <button onClick={() => setClickedPos({ lat: 59.73020, lng: 10.20303 })} disabled={chosenQuestion.item == '' || chosenSpecies.item == ''}
+                        className=" row-start-4 row-span-1 xl:col-start-4 xl:col-span-1 xl:place-self-end my-2 mr-4 w-24 h-12 rounded bg-blue-400 hover:bg-blue-500 disabled:bg-slate-300 text-lg"> Go </button>
                     </div>
-                
+                 
                 {/*!tabOne &&*/    }          
                 </div>
                 <FjordMap geoData={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos}></FjordMap>
-                <div className=" mt-8 p-4 bg-blue-200 w-5/6 h-16 rounded-md self-center flex flex-row">
-                    <InfoIcon className=" text-slate-700 ml-4 mr-4 self-center" fontSize="medium"></InfoIcon>
+                <div className=" mt-8 p-4 bg-blue-200 w-2/3 xl:w-full h-fit mx-auto rounded-md self-center flex flex-row">
+                    <InfoIcon className=" text-slate-700 ml-4 mr-4 self-start" fontSize="medium"></InfoIcon>
                     <p className="self-center"> 
                         Choose a species and the position on the map that you would like informaion on. 
                         When you are ready, click the button to get information on the species in the chosen area.

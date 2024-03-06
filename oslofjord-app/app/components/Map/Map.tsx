@@ -91,8 +91,8 @@ export default function Map({ geoData, clickedPos, setClickedPos }: any) {
     }
 
     return (
-        <MapContainer className=' -z-0 mt-4 place-self-center' center={[geoData.lat, geoData.lng]} zoom={11} maxZoom={18}
-            minZoom={6} style={{ height: "500px", width: "1200px"}}>
+        <MapContainer className='-z-0 mt-4 mx-auto w-2/3 xl:w-full items-center' center={[geoData.lat, geoData.lng]} zoom={11} maxZoom={18}
+            minZoom={6} style={{ height: '500px', width: 'null'}}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
