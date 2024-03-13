@@ -49,3 +49,14 @@ export const GET_SPECIES = gql`
     }
   }
 `;
+
+export const GET_SIMULATION = gql`
+  query Simulations($_eq: Int!){
+    simulations(where: {grid_id: {_eq: $_eq}}, order_by: {id_sim: desc}, limit: 1) {
+      temperature
+      turbidity
+      conductivity
+      record_time
+    }
+  }
+`;

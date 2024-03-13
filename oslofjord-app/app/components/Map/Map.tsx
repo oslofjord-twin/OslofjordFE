@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Popup, Marker, useMapEvents, CircleMarker, Circle } from "react-leaflet";
+import React from 'react';
+import { MapContainer, TileLayer, Popup, Marker, useMapEvents, Circle } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
 import 'leaflet-defaulticon-compatibility';
@@ -8,12 +8,11 @@ import MapRectangle from './MapRectangle';
 import { useQuery} from '@apollo/client';
 import { GET_INTERSECTION } from '@/app/api/gqlQueries';
 
-
 //export const bounds : any = makeVar([])
 // ^ Compatibility to retrieve leaflet icons https://github.com/ghybs/leaflet-defaulticon-compatibility
 
 // geoData, clickedPos and setClickedPos are props from Dashboard.tsx
-export default function Map({ geoData, clickedPos, setClickedPos }: any) {
+export default function Map({ geoData, clickedPos, setClickedPos, setGridID }: any) {
     // grid border values to ensure that the clicked position is within the grid that contains data
     const grid_lng = [10.00, 11.00]
     const grid_lat = [59.00, 59.95]
@@ -74,6 +73,7 @@ export default function Map({ geoData, clickedPos, setClickedPos }: any) {
         click: (loc) => {
             if (loc.latlng.lng > grid_lng[0] && loc.latlng.lng < grid_lng[1] && loc.latlng.lat > grid_lat[0] && loc.latlng.lat < grid_lat[1]) {
                 setClickedPos(loc.latlng)
+                setGridID(data.grid[0].id)
             }
             map.flyTo(loc.latlng, map.getZoom())
             console.log('current location: ', loc.latlng)

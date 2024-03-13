@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from 'react';
-import { makeVar } from '@apollo/client';
-import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink, from } from '@apollo/client';
 import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
 import { useAuth0 } from '@auth0/auth0-react';
 
 const httpLink = createHttpLink({
@@ -18,9 +18,21 @@ const authLink = setContext(() => {
   }
 });
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.error(`[Network error]: ${networkError}`);
+});
+
+
 const createApolloClient = () => {
   return new ApolloClient({
-    link: authLink.concat(httpLink),
+    //link: authLink.concat(httpLink),
+    link: from([errorLink, authLink.concat(httpLink)]),
     cache: new InMemoryCache(),
   })
 };

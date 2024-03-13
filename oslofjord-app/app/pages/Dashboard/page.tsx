@@ -1,12 +1,13 @@
 'use client';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SensorInfoCard from "@/app/components/SensorInfoCard";
 import dynamic from "next/dynamic"
 import Dropdown from "@/app/components/Dropdown";
-import { ApolloProvider } from '@apollo/client';
-import client from "@/app/api/apolloClient";
+import { ApolloProvider, useLazyQuery, useQuery } from '@apollo/client';
 import InfoIcon from '@mui/icons-material/Info';
-import { GET_SPECIES } from "@/app/api/gqlQueries";
+import { GET_INTERSECTION, GET_SIMULATION, GET_SPECIES } from "@/app/api/gqlQueries";
+
+
 // Next.js combined with leaflet can be problematic, so we need to have dynamic loading
 // solution --> https://stackoverflow.com/questions/74289687/leaflet-implementation-on-next-js-13
 
@@ -20,19 +21,29 @@ const Dashboard = () => {
     const landerPosition = { lat: 59.658233, lng: 10.624583}
     // clicked on map by user
     const [clickedPos, setClickedPos] = useState( landerPosition )
-    // written by user in input box
-    const [writtenPosition, setWrittenPosition] = useState( landerPosition )
+    // question chosen from dropdown menu
+    const [chosenQuestion, setChosenQuestion] = useState({item: ''}) 
     // species chosen from dropdown menu
     const [chosenSpecies, setChosenSpecies] = useState({item: ''}) // , id: 0})
-    const [chosenQuestion, setChosenQuestion] = useState({item: ''}) 
+    // grid id from the rectangle on the map
+    const [gridID , setGridID] = useState(1) // , id: 0})
+
+    // temporary list of questions the user can ask the twin
     const temporaryQuestionlist = ['Is this a good place for']
-    // which tab to display
-    //const [tabOne, setTabOne] = useState(true)
 
     console.log('chosen species is', chosenSpecies)
-
+    console.log('chosen question is', chosenQuestion)
+    console.log('the grid id is ', gridID)
+    
+    // Loads data from the API to make the grid rectangle using the GET_INTERSECTION query
+    
+    const [getData, { loading, error, data }] = useLazyQuery(GET_SIMULATION)  //set which query to run here with variables
+   
+    if (data) {
+        console.log(data)
+    }
     return (
-        <ApolloProvider client={client()}>
+    
         <div className="grid grid-flow-row mt-12 mb-28 w-screen place-content-center">
             <p className=" text-slate-100 font-semibold text-2xl md:text-3xl place-self-center pt-4 mt-4"> Dashboard </p> 
             <div className=" pb-12 mb-12 items-center" >
@@ -47,19 +58,23 @@ const Dashboard = () => {
                         className='static h-16 col-start-3 col-span-1 w-fit bg-slate-100 p-4 place-self-start placeholder-gray-500 focus:placeholder-opacity-20'>
                     </input>
                     */}
-                    <button onClick={() => setClickedPos({ lat: 59.73020, lng: 10.20303 })} disabled={chosenQuestion.item == '' || chosenSpecies.item == ''}
+                    <button onClick={() => getData({variables: { "_eq": gridID }})} disabled={chosenQuestion.item == '' || chosenSpecies.item == ''}
                         className=" row-start-4 row-span-1 xl:col-start-4 xl:col-span-1 xl:place-self-end my-2 mr-4 w-24 h-12 rounded bg-blue-400 hover:bg-blue-500 disabled:bg-slate-300 text-lg"> Go </button>
+         
                     </div>
                  
                 {/*!tabOne &&*/    }          
                 </div>
-                <FjordMap geoData={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos}></FjordMap>
+                <FjordMap geoData={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos} setGridID={setGridID}></FjordMap>
                 <div className=" mt-8 p-4 bg-blue-200 w-2/3 xl:w-full h-fit mx-auto rounded-md self-center flex flex-row">
                     <InfoIcon className=" text-slate-700 ml-4 mr-4 self-start" fontSize="medium"></InfoIcon>
                     <p className="self-center"> 
-                        Choose a species and the position on the map that you would like informaion on. 
-                        When you are ready, click the button to get information on the species in the chosen area.
+                        Choose a question, a species, and a position on the map that you would like informaion on. 
+                        When you are ready, click the button to get information from the digital twin.
                     </p>
+                </div>
+                <div className="m-12 p-12 bg-white text-black text-large">
+                    {error ? error?.message : 'no'}
                 </div>
             </div>
             <p className=" text-slate-100 font-semibold text-2xl md:text-3xl place-self-center pb-4 mb-8"> Real-time Data from the Drøbak Lander</p>
@@ -88,9 +103,6 @@ const Dashboard = () => {
             {/*<button className=" p-4 mt-4 mb-4 rounded border-slate-300 bg-slate-100 hover:bg-blue-400 w-fit h-fit"> Show results</button>*/}
 
             </div>
-            </ApolloProvider>
-
-
     )
 }
 
