@@ -3,9 +3,14 @@ import React, { useState } from "react";
 import SensorInfoCard from "@/app/components/SensorInfoCard";
 import dynamic from "next/dynamic"
 import Dropdown from "@/app/components/Dropdown";
-import { ApolloProvider, useLazyQuery, useQuery } from '@apollo/client';
+import { ApolloProvider, useLazyQuery, useMutation } from '@apollo/client';
 import InfoIcon from '@mui/icons-material/Info';
-import { GET_INTERSECTION, GET_SIMULATION, GET_SPECIES } from "@/app/api/gqlQueries";
+import { GET_INTERSECTION, GET_SIMULATION, GET_SPECIES, INSERT_REQUEST } from "@/app/api/gqlQueries";
+import fetch from 'node-fetch';
+//import dns from 'node:dns';
+
+//needs to be set to avoid ERR_CONNECTION_REFUSER when fetching
+//dns.setDefaultResultOrder('ipv4first');
 
 
 // Next.js combined with leaflet can be problematic, so we need to have dynamic loading
@@ -14,6 +19,12 @@ import { GET_INTERSECTION, GET_SIMULATION, GET_SPECIES } from "@/app/api/gqlQuer
 const FjordMap = dynamic(() => import("@/app/components/Map/index"), { 
     ssr: false,
 })
+
+function getResults (getData : any, insertReq : any, gridID : number, chosenSpecies : {item: string}) {
+    const mutateData = insertReq({ variables: { species: chosenSpecies.item, grid_id: gridID }})
+
+    //const data = getData({variables: { "grid_id": gridID , "species_name": chosenSpecies.item}})
+}
 
 // Dashboard website wrapped in ApolloProvider to interact with the API
 const Dashboard = () => {
@@ -27,6 +38,8 @@ const Dashboard = () => {
     const [chosenSpecies, setChosenSpecies] = useState({item: ''}) // , id: 0})
     // grid id from the rectangle on the map
     const [gridID , setGridID] = useState(1) // , id: 0})
+    // is set to true when popup window is displayed
+    const [popup, setPopup] = useState(false)
 
     // temporary list of questions the user can ask the twin
     const temporaryQuestionlist = ['Is this a good place for']
@@ -40,8 +53,22 @@ const Dashboard = () => {
     const [getData, { loading, error, data }] = useLazyQuery(GET_SIMULATION)  //set which query to run here with variables
    
     if (data) {
-        console.log(data)
-    }
+        console.log(data)    
+    } 
+
+    const [insertReq] = useMutation(INSERT_REQUEST
+    ,{
+        onCompleted: (data) => {
+          console.log(data) // the response
+          getData({variables: { "grid_id": gridID , "species_name": chosenSpecies.item}})
+        },
+        onError: (error) => {
+          console.log(error); // the error if that is the case
+        },
+      }
+    );
+    
+
     return (
     
         <div className="grid grid-flow-row mt-12 mb-28 w-screen place-content-center">
@@ -58,23 +85,18 @@ const Dashboard = () => {
                         className='static h-16 col-start-3 col-span-1 w-fit bg-slate-100 p-4 place-self-start placeholder-gray-500 focus:placeholder-opacity-20'>
                     </input>
                     */}
-                    <button onClick={() => getData({variables: { "_eq": gridID }})} disabled={chosenQuestion.item == '' || chosenSpecies.item == ''}
+                    <button onClick={() => getResults(getData, insertReq, gridID, chosenSpecies)} disabled={chosenQuestion.item == '' || chosenSpecies.item == ''}
                         className=" row-start-4 row-span-1 xl:col-start-4 xl:col-span-1 xl:place-self-end my-2 mr-4 w-24 h-12 rounded bg-blue-400 hover:bg-blue-500 disabled:bg-slate-300 text-lg"> Go </button>
-         
                     </div>
-                 
                 {/*!tabOne &&*/    }          
                 </div>
-                <FjordMap geoData={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos} setGridID={setGridID}></FjordMap>
+                <FjordMap geoData={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos} setGridID={setGridID} popup={popup}></FjordMap>
                 <div className=" mt-8 p-4 bg-blue-200 w-2/3 xl:w-full h-fit mx-auto rounded-md self-center flex flex-row">
                     <InfoIcon className=" text-slate-700 ml-4 mr-4 self-start" fontSize="medium"></InfoIcon>
                     <p className="self-center"> 
                         Choose a question, a species, and a position on the map that you would like informaion on. 
                         When you are ready, click the button to get information from the digital twin.
                     </p>
-                </div>
-                <div className="m-12 p-12 bg-white text-black text-large">
-                    {error ? error?.message : 'no'}
                 </div>
             </div>
             <p className=" text-slate-100 font-semibold text-2xl md:text-3xl place-self-center pb-4 mb-8"> Real-time Data from the Drøbak Lander</p>

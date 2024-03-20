@@ -12,7 +12,7 @@ import { GET_INTERSECTION } from '@/app/api/gqlQueries';
 // ^ Compatibility to retrieve leaflet icons https://github.com/ghybs/leaflet-defaulticon-compatibility
 
 // geoData, clickedPos and setClickedPos are props from Dashboard.tsx
-export default function Map({ geoData, clickedPos, setClickedPos, setGridID }: any) {
+export default function Map({ geoData, clickedPos, setClickedPos, setGridID, popup }: any) {
     // grid border values to ensure that the clicked position is within the grid that contains data
     const grid_lng = [10.00, 11.00]
     const grid_lat = [59.00, 59.95]
@@ -22,6 +22,7 @@ export default function Map({ geoData, clickedPos, setClickedPos, setGridID }: a
     const { loading, error, data } = useQuery(GET_INTERSECTION, {
         variables:  { point: { type: "Point", coordinates: [clickedPos.lng, clickedPos.lat] }},  //set which query to run here with variables
     })
+
     if (error) {
     console.error(error);
     }
@@ -29,7 +30,6 @@ export default function Map({ geoData, clickedPos, setClickedPos, setGridID }: a
     // CURRENTLY NOT IN USE
     // Creates values for the bounds of rectangles and puts it in a list.
     function CalculateSquares() {
-
         let listOfBounds : any = new Array()
 
         // minimum and maximum latitude and longitude values to create the grid
@@ -110,6 +110,12 @@ export default function Map({ geoData, clickedPos, setClickedPos, setGridID }: a
             {data &&
                 <MapRectangle data={data}/>
             }
+            {popup &&
+             <div className=" self-center z-40 bg-slate-100 text-slate-800 m-2 p-2">
+                A div with some info ...
+             </div>
+            }
+         
         </MapContainer>
     );
 };
