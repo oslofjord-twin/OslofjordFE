@@ -5,11 +5,11 @@ import Dashboard from './pages/Dashboard/page';
 
 export default function Home() {
   return (
+    <ApolloProvider client={client()}> 
     <main>
-      <ApolloProvider client={client()}>
         <Dashboard/>
-      </ApolloProvider>
       {/*<BottomNav/> ? show only on mobile; alt - MUI drawer*/}
     </main>
+    </ApolloProvider>
   )
 }

@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import { ApolloProvider } from '@apollo/client';
+import client from './api/apolloClient';
 
 export const metadata: Metadata = {
   title: 'Oslofjord Climate Barometer',
@@ -14,7 +16,6 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    
     <html className='layout bg-slate-800'>
       <head>
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>        

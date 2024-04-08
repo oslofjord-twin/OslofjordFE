@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import SensorInfoCard from "@/app/components/SensorInfoCard";
 import dynamic from "next/dynamic"
 import Dropdown from "@/app/components/Dropdown";
-import { ApolloProvider, useLazyQuery, useMutation } from '@apollo/client';
+import { ApolloProvider, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import InfoIcon from '@mui/icons-material/Info';
-import { GET_INTERSECTION, GET_SIMULATION, GET_SPECIES, INSERT_REQUEST } from "@/app/api/gqlQueries";
-import fetch from 'node-fetch';
+import { DONE_REQUEST, GET_SIMULATION, GET_SPECIES, INSERT_REQUEST } from "@/app/api/gqlQueries";
+
 //import dns from 'node:dns';
 
 //needs to be set to avoid ERR_CONNECTION_REFUSER when fetching
@@ -20,10 +20,9 @@ const FjordMap = dynamic(() => import("@/app/components/Map/index"), {
     ssr: false,
 })
 
-function getResults (getData : any, insertReq : any, gridID : number, chosenSpecies : {item: string}) {
-    const mutateData = insertReq({ variables: { species: chosenSpecies.item, grid_id: gridID }})
 
-    //const data = getData({variables: { "grid_id": gridID , "species_name": chosenSpecies.item}})
+async function insertMutation (insertReq : any, gridID: number, species : string) {
+    insertReq({ variables: { species: species, grid_id: gridID }}).onCompleted
 }
 
 // Dashboard website wrapped in ApolloProvider to interact with the API
@@ -41,6 +40,10 @@ const Dashboard = () => {
     // is set to true when popup window is displayed
     const [popup, setPopup] = useState(false)
 
+    // will this work with several clients?
+    const [dataReady, setDataReady] = useState(false)
+    const [displayData, setDisplayData] = useState(null)
+    
     // temporary list of questions the user can ask the twin
     const temporaryQuestionlist = ['Is this a good place for']
 
@@ -48,26 +51,77 @@ const Dashboard = () => {
     console.log('chosen question is', chosenQuestion)
     console.log('the grid id is ', gridID)
     
-    // Loads data from the API to make the grid rectangle using the GET_INTERSECTION query
-    
-    const [getData, { loading, error, data }] = useLazyQuery(GET_SIMULATION)  //set which query to run here with variables
-   
-    if (data) {
-        console.log(data)    
-    } 
-
-    const [insertReq] = useMutation(INSERT_REQUEST
-    ,{
-        onCompleted: (data) => {
-          console.log(data) // the response
-          getData({variables: { "grid_id": gridID , "species_name": chosenSpecies.item}})
+    // QUERIES
+    const [getData, { loading: otherLoading, error: otherError, data: otherData }] = useLazyQuery(GET_SIMULATION)  //set which query to run here with variables
+    const {loading, error, data, refetch} = useQuery(DONE_REQUEST)
+    // MUTATION
+    const [insertReq] = useMutation(INSERT_REQUEST, {
+        refetchQueries: [{query: DONE_REQUEST}],
+        awaitRefetchQueries: true,
+        onCompleted: (dataset : any) => {
+            const request_id = dataset.insert_requests_one.request_id // the response's request_id
+            findMutation(request_id)
+            updateTable(request_id)
         },
         onError: (error) => {
-          console.log(error); // the error if that is the case
+          console.log(error); 
         },
       }
     );
-    
+
+    async function refetchFunc(mutation : any) {
+        //remember to check that length is 1, only one element with identical requestid
+        let dataset = await refetch()
+        console.log('dataset', dataset)
+
+        let mutatedEl = await dataset.data.requests.find((request : any) => request.request_id == mutation)
+        //remember to check that it is found too
+        let done = mutatedEl.done    
+        console.log('done', done)
+
+        while (done == false) {
+            dataset = await refetch()
+            mutatedEl = dataset.data.requests.find((request : any) => request.request_id == mutation)
+            if (mutatedEl.done == true) {
+                done = true
+                console.log('Results available!')
+            } else {
+                await new Promise(resolve => setTimeout(resolve, 500))
+            
+            }
+        }    
+    }
+
+    async function findMutation (request_id : number) {
+        let mutation = data.requests.find((request : any) => request.request_id == request_id)
+        console.log('mutation',mutation)
+        return mutation
+    }
+
+
+    async function displayResult(data : any) {
+        setDisplayData(data)  
+        
+    }
+
+    async function updateTable (request_id: number) {
+        await refetchFunc(request_id) 
+        const request = await findMutation(request_id)
+        const gridID : number = await request.grid_id
+        const species : string = await request.species_name
+        const result = await getData({variables: { "grid_id": gridID , "species_name": species}})
+        console.log('dater1', result)
+        await displayResult(result)
+    }
+
+    async function makeRequest(gridID : number, species: string) {
+        // first, reset any previous data request results
+        setDataReady(false)
+        setDisplayData(null)
+        // insert new mutation in the database
+        await insertMutation(insertReq, gridID, species)
+        setDataReady(true)
+    }
 
     return (
     
@@ -79,18 +133,13 @@ const Dashboard = () => {
                     <div className="grid grid-rows-4 xl:grid-cols-4 p-2 place-items-center xl:place-items-baseline bg-slate-100 h-60 xl:h-20 w-2/3 mx-auto xl:w-full rounded-lg">
                     
                     <Dropdown styling='absolute top-3 z-20 xl:z-30' temporary={temporaryQuestionlist} query={GET_SPECIES} placeholder={'Choose a question ...'} setChosen={setChosenQuestion}/>
-                    <Dropdown styling='absolute top-20 xl:top-3 z-10 xl:left-96 xl:ml-8' temporary={['null']} query={GET_SPECIES} placeholder={'Search for species ...'} setChosen={setChosenSpecies}/>
-                    {/* 
-                    <input type="text" placeholder={clickedPos.lat.toPrecision(8).toString() + ", " + clickedPos.lng.toPrecision(8).toString()} 
-                        className='static h-16 col-start-3 col-span-1 w-fit bg-slate-100 p-4 place-self-start placeholder-gray-500 focus:placeholder-opacity-20'>
-                    </input>
-                    */}
-                    <button onClick={() => getResults(getData, insertReq, gridID, chosenSpecies)} disabled={chosenQuestion.item == '' || chosenSpecies.item == ''}
+                    <Dropdown styling='absolute top-20 z-10 xl:top-3 xl:left-96 xl:ml-8' temporary={['null']} query={GET_SPECIES} placeholder={'Search for species ...'} setChosen={setChosenSpecies}/>
+                    <button onClick={() => makeRequest(gridID, chosenSpecies.item)} disabled={chosenQuestion.item == '' || chosenSpecies.item == ''}
                         className=" row-start-4 row-span-1 xl:col-start-4 xl:col-span-1 xl:place-self-end my-2 mr-4 w-24 h-12 rounded bg-blue-400 hover:bg-blue-500 disabled:bg-slate-300 text-lg"> Go </button>
                     </div>
-                {/*!tabOne &&*/    }          
+                {/*!tabOne &&*/}          
                 </div>
-                <FjordMap geoData={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos} setGridID={setGridID} popup={popup}></FjordMap>
+                <FjordMap geoData={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos} setGridID={setGridID} popup={popup} dataReady={dataReady} setDataReady={setDataReady} displayData={displayData} setDisplayData={setDisplayData}></FjordMap>
                 <div className=" mt-8 p-4 bg-blue-200 w-2/3 xl:w-full h-fit mx-auto rounded-md self-center flex flex-row">
                     <InfoIcon className=" text-slate-700 ml-4 mr-4 self-start" fontSize="medium"></InfoIcon>
                     <p className="self-center"> 
@@ -105,7 +154,8 @@ const Dashboard = () => {
                 <SensorInfoCard type="Salinity" unit="ppt" value="18" change="0.8"/>
                 <SensorInfoCard type="Turbidity" unit="FTU" value="4.5" change="1.4"/>
             </div>            
-            {/* 
+            { /* 
+
             <div className="mt-8 place-self-center">
                 <ul className="flex flex-wrap text-lg font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
                     <li>

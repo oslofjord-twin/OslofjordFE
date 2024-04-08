@@ -1,18 +1,20 @@
 "use client";
 import React from 'react';
-import { MapContainer, TileLayer, Popup, Marker, useMapEvents, Circle } from "react-leaflet";
+import { MapContainer, TileLayer, Popup, Marker, useMapEvents, Circle, LayersControl, FeatureGroup, Pane, Rectangle, Tooltip } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
 import 'leaflet-defaulticon-compatibility';
 import MapRectangle from './MapRectangle';
 import { useQuery} from '@apollo/client';
 import { GET_INTERSECTION } from '@/app/api/gqlQueries';
+import { DivOverlay } from 'leaflet';
+import ResultsDiv from '../ResultsDiv';
 
 //export const bounds : any = makeVar([])
 // ^ Compatibility to retrieve leaflet icons https://github.com/ghybs/leaflet-defaulticon-compatibility
 
 // geoData, clickedPos and setClickedPos are props from Dashboard.tsx
-export default function Map({ geoData, clickedPos, setClickedPos, setGridID, popup }: any) {
+export default function Map({ geoData, clickedPos, setClickedPos, setGridID, popup, dataReady, setDataReady, displayData, setDisplayData }: any) {
     // grid border values to ensure that the clicked position is within the grid that contains data
     const grid_lng = [10.00, 11.00]
     const grid_lat = [59.00, 59.95]
@@ -91,6 +93,7 @@ export default function Map({ geoData, clickedPos, setClickedPos, setGridID, pop
     }
 
     return (
+        <div className='relative '>
         <MapContainer className='-z-0 mt-4 mx-auto w-2/3 xl:w-full items-center' center={[geoData.lat, geoData.lng]} zoom={11} maxZoom={18}
             minZoom={6} style={{ height: '500px', width: 'null'}}>
             <TileLayer
@@ -110,13 +113,15 @@ export default function Map({ geoData, clickedPos, setClickedPos, setGridID, pop
             {data &&
                 <MapRectangle data={data}/>
             }
-            {popup &&
-             <div className=" self-center z-40 bg-slate-100 text-slate-800 m-2 p-2">
-                A div with some info ...
-             </div>
+
+            </MapContainer>
+            {/* Displays the result from the request */}
+            {dataReady == true &&
+                <ResultsDiv dataReady={dataReady} setDataReady={setDataReady} displayData={displayData} setDisplayData={setDisplayData}/>
             }
+            </div>
          
-        </MapContainer>
+        
     );
 };
 

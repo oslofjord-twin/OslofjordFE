@@ -65,7 +65,8 @@ query MyQuery ($grid_id: Int!, $species_name: String!) {
     suitable_spawning_temperature
     suitable_temperature
   }
-}`
+}
+`;
 
 
 export const INSERT_REQUEST = gql`
@@ -73,4 +74,29 @@ export const INSERT_REQUEST = gql`
     insert_requests_one(object: {species_name: $species, grid_id: $grid_id}) {
       request_id
     }
-  }`
+  }
+  `;
+
+
+export const DONE_SUBSCRIPTION = gql`
+  subscription MySubscription {
+  requests {
+      request_id
+      grid_id
+      done
+      species_name
+    }
+  }
+`;
+
+export const DONE_REQUEST = gql`
+  query DoneRequest {
+    requests {
+      request_id
+      species_name
+      grid_id
+      done
+    }
+  }
+  `;
+
