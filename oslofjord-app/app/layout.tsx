@@ -2,8 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import { ApolloProvider } from '@apollo/client';
-import client from './api/apolloClient';
+import GraphQlProvider from './api/graphQLProvider';
 
 export const metadata: Metadata = {
   title: 'Oslofjord Climate Barometer',
@@ -26,6 +25,7 @@ export default function RootLayout({
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossOrigin=""></script>
       </head>
+      <GraphQlProvider>
       <body>
         <Header/>
         <main className='overflow-hidden'>
@@ -33,6 +33,7 @@ export default function RootLayout({
         </main>
         <Footer/>
       </body>
+      </GraphQlProvider>
     </html>
   )
 }

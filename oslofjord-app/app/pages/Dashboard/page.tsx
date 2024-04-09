@@ -3,30 +3,24 @@ import React, { useState } from "react";
 import SensorInfoCard from "@/app/components/SensorInfoCard";
 import dynamic from "next/dynamic"
 import Dropdown from "@/app/components/Dropdown";
-import { ApolloProvider, useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import InfoIcon from '@mui/icons-material/Info';
 import { DONE_REQUEST, GET_SIMULATION, GET_SPECIES, INSERT_REQUEST } from "@/app/api/gqlQueries";
 
-//import dns from 'node:dns';
-
-//needs to be set to avoid ERR_CONNECTION_REFUSER when fetching
-//dns.setDefaultResultOrder('ipv4first');
-
-
-// Next.js combined with leaflet can be problematic, so we need to have dynamic loading
+// Next.js combined with leaflet can be problematic, so we need a dynamic loading
 // solution --> https://stackoverflow.com/questions/74289687/leaflet-implementation-on-next-js-13
-
 const FjordMap = dynamic(() => import("@/app/components/Map/index"), { 
     ssr: false,
 })
-
 
 async function insertMutation (insertReq : any, gridID: number, species : string) {
     insertReq({ variables: { species: species, grid_id: gridID }}).onCompleted
 }
 
 // Dashboard website wrapped in ApolloProvider to interact with the API
-const Dashboard = () => {
+export default function Dashboard() {
+
+
     // Position of lander: default position to center the map
     const landerPosition = { lat: 59.658233, lng: 10.624583}
     // clicked on map by user
@@ -110,7 +104,7 @@ const Dashboard = () => {
         const gridID : number = await request.grid_id
         const species : string = await request.species_name
         const result = await getData({variables: { "grid_id": gridID , "species_name": species}})
-        console.log('dater1', result)
+        console.log('Results from final query', result)
         await displayResult(result)
     }
 
@@ -124,7 +118,6 @@ const Dashboard = () => {
     }
 
     return (
-    
         <div className="grid grid-flow-row mt-12 mb-28 w-screen place-content-center">
             <p className=" text-slate-100 font-semibold text-2xl md:text-3xl place-self-center pt-4 mt-4"> Dashboard </p> 
             <div className=" pb-12 mb-12 items-center" >
@@ -148,13 +141,15 @@ const Dashboard = () => {
                     </p>
                 </div>
             </div>
+            { /* MIGHT REMOVE -- previous functionality
             <p className=" text-slate-100 font-semibold text-2xl md:text-3xl place-self-center pb-4 mb-8"> Real-time Data from the Drøbak Lander</p>
             <div className="grid grid-rows-1 md:grid-cols-3 mb-12 place-items-center"> 
                 <SensorInfoCard type="Temperature" unit="°C" value="7.5" change="1.6"/>
                 <SensorInfoCard type="Salinity" unit="ppt" value="18" change="0.8"/>
                 <SensorInfoCard type="Turbidity" unit="FTU" value="4.5" change="1.4"/>
-            </div>            
-            { /* 
+            </div>       
+             
+        
 
             <div className="mt-8 place-self-center">
                 <ul className="flex flex-wrap text-lg font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
@@ -177,5 +172,3 @@ const Dashboard = () => {
             </div>
     )
 }
-
-export default Dashboard;

@@ -5,10 +5,6 @@ import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { useAuth0 } from '@auth0/auth0-react';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { createClient } from 'graphql-ws';
-import ws from "ws";
-
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 
@@ -21,11 +17,7 @@ const wsLink = new WebSocketLink(
     }
   })
 );
-/*
-const wsLink = typeof window !== "undefined" ? new GraphQLWsLink(createClient({
-  uri: 'wss://localhost:8080/v1/graphql',
-})) : null;
-*/
+
 
 const httpLink = createHttpLink({
   //uri: 'http://172.17.0.1:8080/v1/graphql',
