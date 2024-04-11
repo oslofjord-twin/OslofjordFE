@@ -10,7 +10,7 @@ function Header(){
 
   return (
     <AppBar position="sticky"  sx={{background:'rgb(15 23 42)'}} className='bg-slate-900 w-full'>
-      <Container maxWidth="xl" className='flex flex-col w-screen h-36 pt-12 pb-2'>
+      <Container maxWidth="xl" className='flex flex-col w-screen h-40 pt-12 pb-2'>
         <Toolbar disableGutters>
         <Link href="/" className='mr-4 pr-2 absolute'>  
             <Image
@@ -23,7 +23,7 @@ function Header(){
             />
         </Link>  
         
-        <Link href="/" className='invisible font-light sm:visible text-2xl l:text-3xl xl:text-4xl object-fit inline-block xl:pb-2 ml-28 bg-clip-text text-transparent bg-slate-100 hover:bg-gradient-to-r hover:from-orange-400 via-20% to-slate-100 to-80%'>
+        <Link href="/" className='invisible font-light sm:visible text-2xl l:text-3xl xl:text-4xl object-fit inline-block xl:-mb-1 ml-28 bg-clip-text text-transparent bg-slate-100 hover:bg-gradient-to-r hover:from-orange-400 via-20% to-slate-100 to-80%'>
           Oslo Fjord Climate Barometer
         </Link>
     

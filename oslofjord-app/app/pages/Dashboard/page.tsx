@@ -71,8 +71,9 @@ export default function Dashboard() {
         let mutatedEl = await dataset.data.requests.find((request : any) => request.request_id == mutation)
         //remember to check that it is found too
         let done = mutatedEl.done    
-        console.log('done', done)
+        console.log('done', done,' ', mutatedEl)
 
+        // remember to add a timeout to make sure the while loop does not run infinitely
         while (done == false) {
             dataset = await refetch()
             mutatedEl = dataset.data.requests.find((request : any) => request.request_id == mutation)
@@ -95,15 +96,14 @@ export default function Dashboard() {
 
     async function displayResult(data : any) {
         setDisplayData(data)  
-        
     }
 
     async function updateTable (request_id: number) {
         await refetchFunc(request_id) 
         const request = await findMutation(request_id)
         const gridID : number = await request.grid_id
-        const species : string = await request.species_name
-        const result = await getData({variables: { "grid_id": gridID , "species_name": species}})
+        //const species : string = await request.species_name
+        const result = await getData({variables: { "grid_id": gridID , "request_id": request_id}})
         console.log('Results from final query', result)
         await displayResult(result)
     }
@@ -136,7 +136,7 @@ export default function Dashboard() {
                 <div className=" mt-8 p-4 bg-blue-200 w-2/3 xl:w-full h-fit mx-auto rounded-md self-center flex flex-row">
                     <InfoIcon className=" text-slate-700 ml-4 mr-4 self-start" fontSize="medium"></InfoIcon>
                     <p className="self-center"> 
-                        Choose a question, a species, and a position on the map that you would like informaion on. 
+                        Choose a question, a species, and a position on the map that you would like information on. 
                         When you are ready, click the button to get information from the digital twin.
                     </p>
                 </div>

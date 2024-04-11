@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 //Loosely based on Material UI header components
 
-const menuItems = [{title: 'Dashboard'}, {title: 'Analytics'}, {title: 'About', navTo: 'About/Project', subMenus: [{title: 'Project'}, {title: 'Participants'}, {title: 'Contact'}]}]
+const menuItems = [{title: 'Dashboard'}, {title: 'About', navTo: 'About/Project', subMenus: [{title: 'Project'}, {title: 'Participants'}, {title: 'Contact'}]}]
 
 export default function TopNav() {
   return (
@@ -18,7 +18,7 @@ export default function TopNav() {
                     id='dropdownHoverButton'
                   >
                     <div className='flex flex-column place-items-center'>
-                      <Link href={`/pages/${page.navTo}`} className=' text-slate-100 xl:text-xl text-lg font-mono hover:font-bold hover:drop-shadow-lg'>{page.title}</Link>                        
+                      <Link href={`/pages/${page.navTo}`} className=' text-slate-100 xl:text-2xl text-lg  font-mono hover:font-bold hover:drop-shadow-lg'>{page.title}</Link>                        
                       <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
                       </svg>
@@ -27,7 +27,7 @@ export default function TopNav() {
                   <div id="dropdownHover" className='invisible group-hover:visible delay-300 bg-slate-900 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-70'>
                     <ul className='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby="dropdownHoverButton">
                     {page.subMenus.map((submenu, index) => (
-                      <li key={index} className='block active:font-semibold px-4 py-2 text-lg text-slate-100 hover:bg-slate-100 hover:text-slate-900'>
+                      <li key={index} className='block active:font-semibold px-4 py-2 text-xl text-slate-100 hover:bg-slate-100 hover:text-slate-900'>
                           <Link href={`/pages/${page.title}/${submenu.title}`}>
                               {submenu.title}
                           </Link>
@@ -43,7 +43,7 @@ export default function TopNav() {
                     key={page.title}
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
-                    <Link href={`/pages/${page.title}`} className='text-slate-100 xl:text-xl text-lg font-mono hover:font-bold hover:drop-shadow-lg'>{page.title}</Link>
+                    <Link href={`/pages/${page.title}`} className='text-slate-100 xl:text-2xl text-lg font-mono hover:font-bold hover:drop-shadow-lg'>{page.title}</Link>
                   </Button>
                 </div>
               )

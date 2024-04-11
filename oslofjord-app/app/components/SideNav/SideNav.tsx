@@ -4,10 +4,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import{ Box, Button, IconButton } from '@mui/material';
 import Link from 'next/link';
 
+const menuItems = [{title: 'Dashboard'}, {title: 'About', navTo: 'About/Project', subMenus: [{title: 'Project'}, {title: 'Participants'}, {title: 'Contact'}]}]
+
 //Loosely based on Material UI header components
-
-const menuItems = [{title: 'Dashboard'}, {title: 'Analytics'}, {title: 'About', navTo: 'About/Project', subMenus: [{title: 'Project'}, {title: 'Participants'}, {title: 'Contact'}]}]
-
 export default function SideNav() {
     const [menuOpen, setMenuOpen] = React.useState(false)
     const [subMenu, setSubMenu] = React.useState(false)
@@ -57,7 +56,7 @@ export default function SideNav() {
                 <div id="dropdownHover" className='delay-300 bg-slate-900 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-70'>
                   <ul className='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby="dropdownHoverButton">
                   {page.subMenus.map((submenu, index) => (
-                    <li key={index} className='block active:font-semibold px-4 py-2 text-lg text-slate-100 hover:bg-slate-100 hover:text-slate-900'>
+                    <li key={index} className='block active:font-semibold px-4 py-2 text-xl text-slate-100 hover:bg-slate-100 hover:text-slate-900'>
                         <Link href={`/pages/${page.title}/${submenu.title}`} onClick={() => {handleMenu(); setSubMenu(false)}}>
                             {submenu.title}
                         </Link>

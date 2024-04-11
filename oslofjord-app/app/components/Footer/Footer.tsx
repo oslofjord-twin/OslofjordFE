@@ -15,7 +15,7 @@ function Footer() {
                 alt="Oslofjord DT"
             />
           </Link> 
-          <p className='text-start mb-12 ml-16 text-sm font-normal max-w-sm text-slate-900'>
+          <p className='text-start mb-12 ml-16 font-normal max-w-sm text-slate-900'>
               Oslo Fjord Climate Barometer is a project developed at 
               the Department of Informatics, University of Oslo. 
           </p>

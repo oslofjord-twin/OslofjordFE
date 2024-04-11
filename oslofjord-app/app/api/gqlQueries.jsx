@@ -51,7 +51,7 @@ export const GET_SPECIES = gql`
 `;
 
 export const GET_SIMULATION = gql`
-query MyQuery ($grid_id: Int!, $species_name: String!) {
+query MyQuery ($grid_id: Int!, $request_id: Int!) {
   simulations(where: {grid_id: {_eq: $grid_id}}) {
     id_sim
     conductivity
@@ -59,7 +59,7 @@ query MyQuery ($grid_id: Int!, $species_name: String!) {
     temperature
     turbidity
   }
-  runtime_monitoring(where: {grid_id: {_eq: $grid_id}, _and: {species_name: {_eq: $species_name}}}) {
+  runtime_monitoring(where: {request_id:{_eq: $request_id}}) {
     id_sim
     preferred_spawning_temperature
     suitable_spawning_temperature
@@ -67,7 +67,6 @@ query MyQuery ($grid_id: Int!, $species_name: String!) {
   }
 }
 `;
-
 
 export const INSERT_REQUEST = gql`
   mutation InsertRequest ($species: String!, $grid_id: Int!){
