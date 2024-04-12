@@ -8,6 +8,8 @@ interface DropdownItemProps{
     setSearchQuery:  Dispatch<SetStateAction<string>>
 }
 
+// returns a single list element in the dropdown menu
+
 function DropdownItem ({name, setChosenSpecies, setDropdown, setSearchQuery}: DropdownItemProps) : ReactElement {
   return (
     <li id={name} onClick={() => {setChosenSpecies({item: name}); setDropdown(false); setSearchQuery(name);}} className='cursor-pointer'>

@@ -1,15 +1,14 @@
 import React from 'react'
 import{ Box, Button } from '@mui/material';
 import Link from 'next/link';
+import { navigationList } from '@/app/utils/staticData/navigationList';
 
-//Loosely based on Material UI header components
-
-const menuItems = [{title: 'Dashboard'}, {title: 'About', navTo: 'About/Project', subMenus: [{title: 'Project'}, {title: 'Participants'}, {title: 'Contact'}]}]
+// A top navigation bar - loosely based on Material UI header components
 
 export default function TopNav() {
   return (
     <Box className='absolute inset-y-0 right-0 flex flex-grow-1 invisible lg:visible'>
-          {menuItems.map((page) => (
+          {navigationList.map((page) => (
               page.subMenus ? (
                 <div className='group' key={page.title}>
                   <Button

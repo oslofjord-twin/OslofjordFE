@@ -29,7 +29,7 @@ interface ResChartProps {
   simulations : any;
   runtime_monitoring : any; 
   title : string;
-  setShowGraph : any;
+  setShowGraph : React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Returns a chart showing temperatures the last 24 hours and the runtime monitoring results
@@ -87,7 +87,7 @@ export default function ResultsChart(props : ResChartProps) {
       },
       scales: {
         y: {
-          beginAtZero: true,
+          beginAtZero: false,
           title: {
             display: true,
             text: 'Temperature'
@@ -127,13 +127,12 @@ export default function ResultsChart(props : ResChartProps) {
   return (
    
     <div className=' absolute flex inset-0 z-0 w-5/6 h-fit xl:h-96 xl:w-auto xl:justify-center p-8 mx-auto my-auto rounded-lg border border-slate-400 bg-slate-100 text-black'>
-        <CloseIcon onClick={() => props.setShowGraph(false)} className='m-2 p-2 absolute top-4 right-4 sm:right-8 text-5xl text-slate-700 bg-slate-200 hover:bg-slate-300 hover:text-slate-900 rounded-3xl cursor-pointer'></CloseIcon>
+        <CloseIcon onClick={() => props.setShowGraph(false)} className='m-2 p-2 absolute top-4 right-4 sm:right-8 text-5xl text-slate-500 hover:text-slate-900 hover:shadow-sm cursor-pointer'></CloseIcon>
         {arrayCheck == true && <Line data={data} options={options}/>}
         {arrayCheck == false &&
         <div className='w-fit h-fit p-4 m-8 border-slate-400 bg-slate-100 text-black'>
           There is unfortunately not enough data to create the graph
         </div>}
-  
     </div>
   
   )

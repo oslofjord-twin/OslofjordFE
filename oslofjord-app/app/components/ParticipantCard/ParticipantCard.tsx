@@ -6,6 +6,8 @@ interface Card {
     role: string
 }
 
+// Container for each participant on the contact page
+
 const ParticipantCard = ({ name, role } : Card) => {
     return (
         <div className="flex flex-col md:flex-row items-center max-w-sm md:max-w-md lg:max-w-lg p-4 bg-slate-200 border border-slate-500 rounded-lg shadow">

@@ -1,11 +1,10 @@
 'use client';
 import React, { ChangeEvent, useState } from 'react'
 import { Dispatch, SetStateAction } from 'react';
-import DropdownItem from './DropdownItem';
+import DropdownItem from '../DropdownItem/DropdownItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchIcon from '@mui/icons-material/Search';
-import { DocumentNode, QueryReference, useQuery } from '@apollo/client';
-import { GET_SPECIES } from '@/app/api/gqlQueries';
+import { DocumentNode, useQuery } from '@apollo/client';
 
 // Dropdown menu to choose a species from the Knowledge graph
 

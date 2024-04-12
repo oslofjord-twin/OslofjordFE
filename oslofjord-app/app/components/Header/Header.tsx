@@ -6,6 +6,8 @@ import Image from 'next/image';
 import SideNav from '../SideNav';
 import TopNav from '../TopNav';
 
+// Header of the website - supports both top navigation an side navigation
+
 function Header(){
 
   return (
