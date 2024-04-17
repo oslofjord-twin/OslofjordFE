@@ -7,7 +7,7 @@ import { onError } from "@apollo/client/link/error";
 import { useAuth0 } from '@auth0/auth0-react';
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:8080/v1/graphql',
+  uri: 'http://172.17.0.1:8080/v1/graphql',
 });
 
 const authLink = setContext(() => {
