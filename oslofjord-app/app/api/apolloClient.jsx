@@ -18,10 +18,8 @@ const wsLink = new WebSocketLink(
   })
 );
 
-
 const httpLink = createHttpLink({
-  //uri: 'http://172.17.0.1:8080/v1/graphql',
-  uri: 'http://localhost:8080/v1/graphql',
+  uri: 'http://172.17.0.1:8080/v1/graphql',
 });
 
 const authLink = setContext(() => {
