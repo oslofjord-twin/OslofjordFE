@@ -27,8 +27,7 @@ const Project = () => {
                         <p className="mt-12 text-white text-xl lg:text-2xl font-light leading-loose">
                             We collaborate with <Link href="https://friskoslofjord.no" className="text-blue-600 italic hover:font-bold">Frisk Oslofjord </Link>, 
                             a project which collects data from the fjord. Frisk Oslofjord provides real-time and historical data about salinity, 
-                            temperature, oxygen, plankton, etc. in the Oslo Fjord.  The topic of this thesis is to develop a semantic digital twin 
-                            for the Oslo Fjord.
+                            temperature, oxygen, plankton, etc. in the Oslo Fjord. 
                         </p>
                     </div>
                 </div>
@@ -43,38 +42,33 @@ const Project = () => {
                             <p className="mt-12 text-slate-100 text-xl lg:text-2xl font-light leading-loose">
                                 The digital twin architecture will be developed using <Link href="https://smolang.org" className="text-blue-600 italic hover:font-bold"> SMOL </Link>, a language developed 
                                 at UiO specifically for digital twins. SMOL integrates simulators of physical systems with semantic web technologies and databases. 
-                                The thesis encompasses working with SMOL, time series databases, and visualization frameworks. Since the decision of which 
-                                visualization framework and database to use is part of the thesis, we welcome students with experience in these areas, 
-                                but this is not a necessary prerequisite.
+                                The project encompasses working with SMOL, time series databases, runtime monitoring, APIs, knowledge graphs and visualization frameworks. 
                             </p>
                         </div>
                     </div> 
                 </div>
-                <div className="mx-auto w-fit mt-24 leading-7">
-                    <h1 className="font-semibold text-4xl sm:text-5xl tracking-wide text-slate-200 "> Sensor Data </h1>
+                <div className=" self-start ml-28 xl:mx-auto w-fit mt-24 leading-7">
+                    <h1 className="self-center font-semibold text-4xl sm:text-5xl tracking-wide text-slate-200 "> Sensor Data </h1>
                 </div>
-                <div className="static flex flex-col lg:grid lg:grid-cols-3 m-4 p-12 place-items-center">
+                <div className="static flex flex-col self-center lg:grid lg:grid-cols-3 m-4 p-12">
                     <Image
-                            className="object-contain w-auto h-auto mb-12 lg:mb-0 col-start-1 rounded-lg hover:rounded-lg shadow-green-900/30 hover:shadow-indigo-900/40"
+                            className="object-contain mb-12 ml-10 xl:place-self-end mr-8 lg:mb-0 col-start-1 rounded-lg hover:rounded-lg shadow-green-900/30 hover:shadow-indigo-900/40"
                             src="/static/oslofjord2.png"
                             width={360}
-                            height={500}
+                            height={400}
                             loading="lazy"
                             alt="Oslofjord map"
                     />
-                    <div className="col-span-2 mr-4 place-self-start font-semibold leading-7 pl-8 pr-8 rounded-xl">
-                        <p className="text-white text-xl lg:text-2xl font-light leading-loose first-letter:text-4xl first-letter:mr-1 first-letter:font-semibold first-letter:text-white first-letter:float-left">
-                            The sensors we retrieve data from are placed on a lander located near Drøbak. Here we can write
-                            more about the lander and the sensors we have available. 
+                    <div className="col-span-2 mr-4 font-semibold leading-7 pl-8 pr-8 rounded-xl">
+                        <p className="w-2/3 text-white text-xl lg:text-2xl font-light leading-loose first-letter:text-4xl first-letter:mr-1 first-letter:font-semibold first-letter:text-white first-letter:float-left">
+                            The sensors we retrieve data from are placed on a lander located near Drøbak. 
+                        </p>      
+                        <p className="w-2/3 mt-2 text-white text-xl lg:text-2xl font-light leading-loose">
+                            From collected data, the digital twin can create simulated data for other parts of the fjord. This data is combined
+                            with species data, such as suitable temperatures and spawning temperatures for different species. 
+                            To further expand the digital twin, more sensors and landers could be added, which will 
+                            improve the simulations. 
                         </p>
-                        <p className="mt-12 text-white text-xl lg:text-2xl  font-light leading-loose">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur scelerisque scelerisque facilisis. Donec in ultricies ligula. Nunc nec mi volutpat, 
-                            iaculis massa a, pulvinar enim. Etiam quis maximus nulla, id accumsan purus. Donec nec sodales mauris. Maecenas malesuada quam eget lacus aliquet, 
-                            eu consectetur dui dictum. Pellentesque vulputate tristique sapien, 
-                            vehicula condimentum lorem imperdiet a. Donec in aliquet tellus. Donec id luctus ipsum. Vivamus ut hendrerit justo, ut sollicitudin nulla. 
-                            Integer malesuada malesuada massa eu dictum. Sed hendrerit libero a sodales consequat. Suspendisse potenti.
-                        </p>
-                  
                     </div>
                 </div>
             </div>

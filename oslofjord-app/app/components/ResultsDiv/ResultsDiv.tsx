@@ -2,6 +2,7 @@ import React from 'react'
 import { conductivityArray, findAverage, temperatureArray, turbidityArray } from "@/app/utils/functions/resultsFunctions"
 import { prefSpawningTempInfo, suitSpawningTempInfo, suitTempInfo } from "@/app/utils/staticData/resultsInfo"
 import SpeciesResults from '../SpeciesResults'
+import { DocumentNode } from '@apollo/client'
 
 interface ResultsDivProps {
     displayData : any

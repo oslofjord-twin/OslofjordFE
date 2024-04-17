@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 interface DropdownItemProps{
     name: string;
-    setChosenSpecies: Dispatch<SetStateAction<{item: string}>> //, id: number}>>
+    setChosenSpecies: Dispatch<SetStateAction<{item: string}>>
     setDropdown: Dispatch<SetStateAction<boolean>>
     setSearchQuery:  Dispatch<SetStateAction<string>>
 }

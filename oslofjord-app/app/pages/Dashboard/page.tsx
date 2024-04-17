@@ -119,8 +119,8 @@ export default function Dashboard() {
             <div className=" pb-12 mb-12 items-center" >
                 <div className=" block relative pb-4 mt-12 mb-8 w-full">
                     <div className="grid grid-rows-4 xl:grid-cols-4 p-2 place-items-center xl:place-items-baseline bg-slate-100 h-60 xl:h-20 w-2/3 mx-auto xl:w-full rounded-lg">
-                    <Dropdown styling='absolute top-3 z-20 xl:z-30' temporary={twinQuestionList} query={GET_SPECIES} placeholder={'Choose a question ...'} setChosen={setChosenQuestion}/>
-                    <Dropdown styling='absolute top-20 z-10 xl:top-3 xl:left-96 xl:ml-8' temporary={['null']} query={GET_SPECIES} placeholder={'Search for species ...'} setChosen={setChosenSpecies}/>
+                    <Dropdown styling='absolute top-3 z-20 xl:z-30' list={twinQuestionList} query={GET_SPECIES} placeholder={'Choose a question ...'} setChosen={setChosenQuestion}/>
+                    <Dropdown styling='absolute top-20 z-10 xl:top-3 xl:left-96 xl:ml-8' list={['null']} query={GET_SPECIES} placeholder={'Search for species ...'} setChosen={setChosenSpecies}/>
                     <button onClick={() => makeRequest(gridID, chosenSpecies.item)} disabled={chosenQuestion.item == '' || chosenSpecies.item == ''}
                         className=" row-start-4 row-span-1 xl:col-start-4 xl:col-span-1 xl:place-self-end my-2 mr-4 w-24 h-12 rounded bg-blue-400 hover:bg-blue-500 disabled:bg-slate-300 text-lg"> Go </button>
                     </div>

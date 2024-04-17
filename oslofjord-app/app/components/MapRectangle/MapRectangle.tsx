@@ -1,4 +1,5 @@
-import React, {useState } from 'react'
+import { LatLngBoundsExpression } from 'leaflet'
+import React from 'react'
 import { Rectangle } from 'react-leaflet'
 
 // Returns a single rectangle for the map, based on react-leaflet Rectangle. 
@@ -8,7 +9,7 @@ interface RectangleProps {
 }
 
 function MapRectangle(props: RectangleProps) {
-    const boundaries : any = [[props.coordinates[0][1], props.coordinates[0][0]], [props.coordinates[1][1], props.coordinates[2][0]]]    
+    const boundaries : LatLngBoundsExpression = [[props.coordinates[0][1], props.coordinates[0][0]], [props.coordinates[1][1], props.coordinates[2][0]]]    
     
     return (
         <Rectangle 

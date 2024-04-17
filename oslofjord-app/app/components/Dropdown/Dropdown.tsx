@@ -6,26 +6,27 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchIcon from '@mui/icons-material/Search';
 import { DocumentNode, useQuery } from '@apollo/client';
 
-// Dropdown menu to choose a species from the Knowledge graph
-
 interface DropdownProps{
     setChosen: Dispatch<SetStateAction<{item: string}>>
     styling: string
     placeholder: string
     query: DocumentNode
-    temporary: string[]
+    list: string[]
 }
 
-function Dropdown({setChosen, styling, placeholder, query, temporary}: DropdownProps) {
+
+// Dropdown menu for the user to choose what to ask the twin
+
+function Dropdown({setChosen, styling, placeholder, query, list: temporary}: DropdownProps) {
     // Loads data about the species from the API using the GET_SPECIES query
     const { loading, error, data } = useQuery(query)
     if (error) {
         console.error(error);
     }
 
-    const [dropdown, setDropdown] = useState(false)
-    const [searchQuery, setSearchQuery] = useState('')
-    const [filteredSpecies, setFilteredSpecies] = useState(data? data.species : [{name:''}])
+    const [dropdown, setDropdown] = useState<boolean>(false)
+    const [searchQuery, setSearchQuery] = useState<string>('')
+    const [filteredSpecies, setFilteredSpecies] = useState<{name: string}[]>(data? data.species : [{name:''}])
 
     // Shows and hides dropdown menu for species list
     function handleDropdown() {
@@ -76,7 +77,6 @@ function Dropdown({setChosen, styling, placeholder, query, temporary}: DropdownP
                 </ul>
             </div>  
             }
-
         </div>   
 )}
 

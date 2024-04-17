@@ -12,6 +12,7 @@ import {
   Legend,
   Filler,
 } from 'chart.js';
+import { DocumentNode } from '@apollo/client';
 
 ChartJS.register(
   CategoryScale,

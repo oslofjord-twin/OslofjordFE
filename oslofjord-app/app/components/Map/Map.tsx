@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
 import 'leaflet-defaulticon-compatibility';
 import MapRectangle from '../MapRectangle/MapRectangle';
-import { useQuery} from '@apollo/client';
+import { DocumentNode, useQuery} from '@apollo/client';
 import { GET_INTERSECTION } from '@/app/api/gqlQueries';
 import ResultsWindow from '../ResultsWindow';
 
@@ -17,8 +17,8 @@ interface MapProps {
     setGridID : React.Dispatch<React.SetStateAction<number>>;
     dataReady: boolean;
     setDataReady: React.Dispatch<React.SetStateAction<boolean>>;
-    displayData: any;
-    setDisplayData: any;
+    displayData: DocumentNode | null;
+    setDisplayData: React.Dispatch<React.SetStateAction<DocumentNode>> | React.Dispatch<React.SetStateAction<null>>;
 }
 
 // geoData, clickedPos and setClickedPos are props from Dashboard.tsx
