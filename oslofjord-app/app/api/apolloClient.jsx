@@ -9,7 +9,7 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 
 const wsLink = new WebSocketLink(
-  new SubscriptionClient("ws://localhost:8080/v1/graphql", {
+  new SubscriptionClient("ws://172.17.0.1:8080/v1/graphql", {
     connectionParams: {
       headers: {
         "x-hasura-admin-secret": "mylongsecretkey",
