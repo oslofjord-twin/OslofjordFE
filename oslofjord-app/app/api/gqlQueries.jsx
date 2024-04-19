@@ -17,7 +17,7 @@ export const GET_SPECIES = gql`
   }
 `;
 
-export const GET_SIMULATION = gql`
+export const GET_RESULTS = gql`
 query MyQuery ($grid_id: Int!, $request_id: Int!) {
   simulations(where: {grid_id: {_eq: $grid_id}}) {
     id_sim
@@ -39,18 +39,6 @@ export const INSERT_REQUEST = gql`
   mutation InsertRequest ($species: String!, $grid_id: Int!){
     insert_requests_one(object: {species_name: $species, grid_id: $grid_id}) {
       request_id
-    }
-  }
-  `;
-
-
-export const DONE_SUBSCRIPTION = gql`
-  subscription MySubscription {
-  requests {
-      request_id
-      grid_id
-      done
-      species_name
     }
   }
 `;

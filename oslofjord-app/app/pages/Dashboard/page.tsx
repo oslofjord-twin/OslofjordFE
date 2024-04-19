@@ -4,7 +4,7 @@ import dynamic from "next/dynamic"
 import Dropdown from "@/app/components/Dropdown";
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import InfoIcon from '@mui/icons-material/Info';
-import { DONE_REQUEST, GET_SIMULATION, GET_SPECIES, INSERT_REQUEST } from "@/app/api/gqlQueries";
+import { DONE_REQUEST, GET_INTERSECTION, GET_RESULTS, GET_SPECIES, INSERT_REQUEST } from "@/app/api/gqlQueries";
 import { twinQuestionList } from "@/app/utils/staticData/twinQuestions";
 
 // Next.js combined with leaflet can be problematic, so we need a dynamic loading
@@ -29,19 +29,22 @@ export default function Dashboard() {
     const [chosenQuestion, setChosenQuestion] = useState({item: ''}) 
     // species chosen from dropdown menu
     const [chosenSpecies, setChosenSpecies] = useState({item: ''}) 
-    // grid id from the rectangle on the map - NOTE - default is set to grid ID of lander 
-    const [gridID , setGridID] = useState<number>(254) 
     // signals if there is data ready to display
     const [dataReady, setDataReady] = useState<boolean>(false)
     // sets any data that is ready for display, default is null
     const [displayData, setDisplayData] = useState(null)
+    
   
     // QUERIES
-    const [getData] = useLazyQuery(GET_SIMULATION)  //set which query to run here with variables
-    const {error, data, refetch} = useQuery(DONE_REQUEST)
-    if (error) {
-        console.log('useQuery, DONE_REQUEST', error)
-    }
+    // Loads data from the API to make the grid rectangle using the GET_INTERSECTION query
+    const { data: gridData } = useQuery(GET_INTERSECTION, {
+        variables:  { point: { type: "Point", coordinates: [clickedPos.lng, clickedPos.lat] }},  //set which query to run here with variables
+    })  
+    // Fetches data about the request to runtime verification to see if results are ready 
+    const { data, refetch } = useQuery(DONE_REQUEST)
+    // Fetches result from the request
+    const [getData] = useLazyQuery(GET_RESULTS)  
+
     // MUTATION
     const [insertReq] = useMutation(INSERT_REQUEST, {
         refetchQueries: [{query: DONE_REQUEST}],
@@ -121,11 +124,11 @@ export default function Dashboard() {
                     <div className="grid grid-rows-4 xl:grid-cols-4 p-2 place-items-center xl:place-items-baseline bg-slate-100 h-60 xl:h-20 w-2/3 mx-auto xl:w-full rounded-lg">
                     <Dropdown styling='absolute top-3 z-20 xl:z-30' list={twinQuestionList} query={GET_SPECIES} placeholder={'Choose a question ...'} setChosen={setChosenQuestion}/>
                     <Dropdown styling='absolute top-20 z-10 xl:top-3 xl:left-96 xl:ml-8' list={['null']} query={GET_SPECIES} placeholder={'Search for species ...'} setChosen={setChosenSpecies}/>
-                    <button onClick={() => makeRequest(gridID, chosenSpecies.item)} disabled={chosenQuestion.item == '' || chosenSpecies.item == ''}
+                    <button onClick={() => makeRequest(gridData.grid[0].id, chosenSpecies.item)} disabled={chosenQuestion.item == '' || chosenSpecies.item == ''}
                         className=" row-start-4 row-span-1 xl:col-start-4 xl:col-span-1 xl:place-self-end my-2 mr-4 w-24 h-12 rounded bg-blue-400 hover:bg-blue-500 disabled:bg-slate-300 text-lg"> Go </button>
                     </div>
                 </div>
-                <FjordMap landerPos={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos} setGridID={setGridID} dataReady={dataReady} setDataReady={setDataReady} displayData={displayData} setDisplayData={setDisplayData}></FjordMap>
+                <FjordMap gridData={gridData} landerPos={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos} dataReady={dataReady} setDataReady={setDataReady} displayData={displayData} setDisplayData={setDisplayData}></FjordMap>
                 <div className=" mt-8 p-4 bg-blue-200 w-2/3 xl:w-full h-fit mx-auto rounded-md self-center flex flex-row">
                     <InfoIcon className=" text-slate-700 ml-4 mr-4 self-start" fontSize="medium"></InfoIcon>
                     <p className="self-center"> 

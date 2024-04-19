@@ -5,44 +5,31 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
 import 'leaflet-defaulticon-compatibility';
 import MapRectangle from '../MapRectangle/MapRectangle';
-import { DocumentNode, useQuery} from '@apollo/client';
-import { GET_INTERSECTION } from '@/app/api/gqlQueries';
+import { DocumentNode } from '@apollo/client';
 import ResultsWindow from '../ResultsWindow';
 
-//needs to be updated with correct types
 interface MapProps {
     landerPos: {lat: number; lng: number;}; 
     clickedPos: {lat: number; lng: number;}; 
+    gridData: any;
     setClickedPos : React.Dispatch<React.SetStateAction<{lat: number; lng: number;}>>;
-    setGridID : React.Dispatch<React.SetStateAction<number>>;
     dataReady: boolean;
     setDataReady: React.Dispatch<React.SetStateAction<boolean>>;
     displayData: DocumentNode | null;
     setDisplayData: React.Dispatch<React.SetStateAction<DocumentNode>> | React.Dispatch<React.SetStateAction<null>>;
 }
 
-// geoData, clickedPos and setClickedPos are props from Dashboard.tsx
 export default function Map(props : MapProps) {
     // grid border values to ensure that the clicked position is within the grid that contains data
     const grid_lng = [10.00, 11.00]
     const grid_lat = [59.00, 59.95]
-    
-    // Loads data from the API to make the grid rectangle using the GET_INTERSECTION query
-    const { error, data } = useQuery(GET_INTERSECTION, {
-        variables:  { point: { type: "Point", coordinates: [props.clickedPos.lng, props.clickedPos.lat] }},  //set which query to run here with variables
-    })  
 
-    if (error) {
-        console.error(error);
-    }
-      
     // Handles any click on the map that is within the grid borders and returns a marker and a popup window when clicked
     function MapEventsHandler() {
         const map = useMapEvents({
         click: (loc) => {
             if (loc.latlng.lng > grid_lng[0] && loc.latlng.lng < grid_lng[1] && loc.latlng.lat > grid_lat[0] && loc.latlng.lat < grid_lat[1]) {
                 props.setClickedPos(loc.latlng)
-                props.setGridID(data.grid[0].id)
             }
             map.flyTo(loc.latlng, map.getZoom())
         },
@@ -75,8 +62,8 @@ export default function Map(props : MapProps) {
             </Circle>
             <MapEventsHandler></MapEventsHandler>
             {/* The rectangular area on the map that the coordinates fall within */}
-            {data &&
-                <MapRectangle coordinates={data.grid[0].geom.coordinates[0]}/>
+            {props.gridData &&
+                <MapRectangle coordinates={props.gridData.grid[0].geom.coordinates[0]}/>
             }
         </MapContainer>
         {/* Displays the result from the request */}
