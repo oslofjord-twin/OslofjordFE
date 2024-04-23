@@ -28,7 +28,8 @@ Open your browser and navigate to **`http://localhost:3000`** to start exploring
 ## Usage
 Users may interact with the digital twin through the use of a map interface and dropdown menus for choosing questions and species. 
 
-1. Choose a question and a species to get information on:\
+1. Choose a question and a species to get information on:
+   <br />
   <img src="/oslofjord-app/public/static/Screenshot1.png" alt="Choose a question and a species" width="800"/>\
   
 2. Choose a location:\
