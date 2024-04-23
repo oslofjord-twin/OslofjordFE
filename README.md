@@ -28,22 +28,15 @@ Open your browser and navigate to **`http://localhost:3000`** to start exploring
 ## Usage
 Users may interact with the digital twin through the use of a map interface and dropdown menus for choosing questions and species. 
 
-1. Choose a question and a species to get information on:
-\
-  <img src="/oslofjord-app/public/static/Screenshot1.png" alt="Choose a question and a species" width="800"/>
-
-\
-2. Choose a location: 
-\
+1. Choose a question and a species to get information on:\
+  <img src="/oslofjord-app/public/static/Screenshot1.png" alt="Choose a question and a species" width="800"/>\
+  
+2. Choose a location:\
 <img src="/oslofjord-app/public/static/Screenshot2.png" alt="Choose a location from the map" width="800"/>
 
-![Choose a location](/oslofjord-app/public/static/Screenshot2.png)
-\
-
-3. Click 'Go' to see the results:
-\
+3. Click 'Go' to see the results:\
 <img src="/oslofjord-app/public/static/Screenshot3.png" alt="Click go and see results" width="800"/>
-\
+
 
 ## File Structure
 ```bash
