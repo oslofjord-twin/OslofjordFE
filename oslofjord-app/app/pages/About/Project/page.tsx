@@ -40,9 +40,7 @@ const Project = () => {
                                 and, building on that, data visualization by oceanographers and other interested members of the public.
                             </p>
                             <p className="mt-12 text-slate-100 text-xl lg:text-2xl font-light leading-loose">
-                                The digital twin architecture will be developed using <Link href="https://smolang.org" className="text-blue-600 italic hover:font-bold"> SMOL </Link>, a language developed 
-                                at UiO specifically for digital twins. SMOL integrates simulators of physical systems with semantic web technologies and databases. 
-                                The project encompasses working with SMOL, time series databases, runtime monitoring, APIs, knowledge graphs and visualization frameworks. 
+                                The digital twin project encompasses working with time-series databases, runtime monitoring, simulations, APIs, knowledge graphs and visualization frameworks. 
                             </p>
                         </div>
                     </div> 
