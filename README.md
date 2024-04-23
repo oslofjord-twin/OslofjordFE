@@ -52,8 +52,8 @@ Users may interact with the digital twin through the use of a map interface and 
   \
    &nbsp;
 <img src="/oslofjord-app/public/static/Screenshot3.png" alt="Click go and see results" width="800"/>
-  \
-   &nbsp;
+  
+   \&nbsp;
 
 
 ## File Structure
