@@ -31,13 +31,12 @@ Users may interact with the digital twin through the use of a map interface and 
 1. Choose a question and a species to get information on:
   \
    &nbsp;
-   \
+   
 
   <img src="/oslofjord-app/public/static/Screenshot1.png" alt="Choose a question and a species" width="800"/>
     \
   &nbsp;
-  \
-
+  
 
 2. Choose a location:
 \&nbsp;\&nbsp;
