@@ -1,6 +1,6 @@
 # Oslo Fjord Digital Twin - Front-end
 
-Welcome to the front-end application for the Oslo Fjord Digital Twin project! This application offers a user interface that enables interaction with the digital twin. Communication with the back-end digital twin is accomplished through the use of GraphQL API and Apollo Client. The application is powered by Next.js and styled using Tailwind CSS. 
+Welcome to the front-end application for the Oslo Fjord Digital Twin project! This application offers a user interface that enables interaction with the digital twin. Communication with the back-end digital twin is accomplished through the use of a GraphQL API and Apollo Client. The application is powered by Next.js and styled using Tailwind CSS. 
 
 
 ## Getting Started
