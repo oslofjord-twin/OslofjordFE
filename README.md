@@ -30,7 +30,7 @@ Users may interact with the digital twin through the use of a map interface and 
 
 1. Choose a question and a species to get information on:
 
-  <img src="/oslofjord-app/public/static/Screenshot1.png" alt="Choose a question and a species" width="200"/>
+  <img src="/oslofjord-app/public/static/Screenshot1.png" alt="Choose a question and a species" width="600"/>
 
 2. Choose a location: 
 ![Choose a location](/oslofjord-app/public/static/Screenshot2.png)
