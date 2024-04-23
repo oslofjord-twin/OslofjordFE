@@ -33,9 +33,15 @@ Users may interact with the digital twin through the use of a map interface and 
    &nbsp;
    \
    &nbsp;
-  <img src="/oslofjord-app/public/static/Screenshot1.png" alt="Choose a question and a species" width="800"/>\
-  
-2. Choose a location:\
+  <img src="/oslofjord-app/public/static/Screenshot1.png" alt="Choose a question and a species" width="800"/>
+    \
+  &nbsp;
+  \
+  &nbsp;
+
+2. Choose a location:
+\&nbsp;\&nbsp;
+
 <img src="/oslofjord-app/public/static/Screenshot2.png" alt="Choose a location from the map" width="400"/>
 
 3. Click 'Go' to see the results:\
