@@ -50,7 +50,7 @@ const Project = () => {
                 </div>
                 <div className="static flex flex-col self-center lg:grid lg:grid-cols-3 m-4 p-12">
                     <Image
-                            className="object-contain mb-12 ml-10 xl:place-self-end mr-8 lg:mb-0 col-start-1 rounded-lg hover:rounded-lg shadow-green-900/30 hover:shadow-indigo-900/40"
+                            className="object-contain w-auto h-auto mb-12 ml-10 xl:place-self-end mr-8 lg:mb-0 col-start-1 rounded-lg hover:rounded-lg shadow-green-900/30 hover:shadow-indigo-900/40"
                             src="/static/oslofjord2.png"
                             width={360}
                             height={400}

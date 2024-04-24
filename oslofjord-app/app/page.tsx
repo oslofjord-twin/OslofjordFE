@@ -5,7 +5,6 @@ export default function Home() {
   return (
     <main>
         <Dashboard/>
-      {/*<BottomNav/> ? show only on mobile; alt - MUI drawer*/}
     </main>
   )
 }

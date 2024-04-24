@@ -36,7 +36,7 @@ const createApolloClient = () => {
   })
 };
     
-const client = () => {
+const Client = () => {
   const { loading } = useAuth0();
   if (loading) {
     <div>Loading...</div>
@@ -50,4 +50,4 @@ const client = () => {
 }
 
 
-export default client;
+export default Client;

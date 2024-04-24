@@ -90,7 +90,7 @@ export default function Dashboard() {
 
     async function findMutation (request_id : number) {
         let mutation = data.requests.find((request : any) => request.request_id == request_id)
-        console.log('mutation',mutation)
+        //console.log('mutation',mutation)
         return mutation
     }
 
@@ -103,7 +103,7 @@ export default function Dashboard() {
         const request = await findMutation(request_id)
         const gridID : null | number = request == undefined ? null : await request.grid_id
         const result = await getData({variables: { "grid_id": gridID , "request_id": request_id}})
-        console.log('Results from final query', result)
+        //console.log('Results from final query', result)
         await displayResult(result)
     }
 
@@ -133,7 +133,7 @@ export default function Dashboard() {
                     <InfoIcon className=" text-slate-700 ml-4 mr-4 self-start" fontSize="medium"></InfoIcon>
                     <p className="self-center"> 
                         Choose a question, a species, and a position on the map that you would like information on. 
-                        When you are ready, click the 'Go' button to get answers from the digital twin.
+                        When you are ready, click the &apos;Go&apos; button to get answers from the digital twin.
                     </p>
                 </div>
             </div>  
