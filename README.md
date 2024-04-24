@@ -1,6 +1,6 @@
 # Oslo Fjord Digital Twin - Front-end
 
-Welcome to the front-end application for the Oslo Fjord Digital Twin project! This application offers a user interface that enables interaction with the digital twin. Communication with the back-end digital twin is accomplished through the use of GraphQL API and Apollo Client. The application is powered by Next.js and styled using Tailwind CSS. 
+Welcome to the front-end application for the Oslo Fjord Digital Twin project! This application offers a user interface that enables interaction with the digital twin. Communication with the back-end digital twin is accomplished through the use of a GraphQL API and Apollo Client. The application is powered by Next.js and styled using Tailwind CSS. 
 
 
 ## Getting Started
@@ -29,13 +29,31 @@ Open your browser and navigate to **`http://localhost:3000`** to start exploring
 Users may interact with the digital twin through the use of a map interface and dropdown menus for choosing questions and species. 
 
 1. Choose a question and a species to get information on:
-![Choose a question and a species](/oslofjord-app/public/static/Screenshot1.png)
+  \
+   &nbsp;
+   
 
-2. Choose a location: 
-![Choose a location](/oslofjord-app/public/static/Screenshot2.png)
+  <img src="/oslofjord-app/public/static/Screenshot1.png" alt="Choose a question and a species" width="800"/>
+
+
+2. Choose a location:
+  \
+   &nbsp;
+
+<img src="/oslofjord-app/public/static/Screenshot2.png" alt="Choose a location from the map" width="400"/>
+
+  \
+   &nbsp;
 
 3. Click 'Go' to see the results:
-![Click Go and see results](/oslofjord-app/public/static/Screenshot3.png)
+
+  \
+   &nbsp;
+<img src="/oslofjord-app/public/static/Screenshot3.png" alt="Click go and see results" width="800"/>
+  
+   \
+   &nbsp;
+
 
 ## File Structure
 ```bash
