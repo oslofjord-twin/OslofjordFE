@@ -18,27 +18,38 @@ export const GET_SPECIES = gql`
 `;
 
 export const GET_RESULTS = gql`
-query MyQuery ($grid_id: Int!, $request_id: Int!) {
-  simulations(where: {grid_id: {_eq: $grid_id}}) {
-    id_sim
-    conductivity
-    record_time
-    temperature
-    turbidity
+  query MyQuery ($grid_id: Int!, $request_id: Int!) {
+    simulations(where: {grid_id: {_eq: $grid_id}}) {
+      id_sim
+      conductivity
+      record_time
+      temperature
+      turbidity
+    }
+    runtime_monitoring(where: {request_id:{_eq: $request_id}}) {
+      id_sim
+      preferred_spawning_temperature
+      suitable_spawning_temperature
+      suitable_temperature
+    }
   }
-  runtime_monitoring(where: {request_id:{_eq: $request_id}}) {
-    id_sim
-    preferred_spawning_temperature
-    suitable_spawning_temperature
-    suitable_temperature
-  }
-}
 `;
 
 export const INSERT_REQUEST = gql`
   mutation InsertRequest ($species: String!, $grid_id: Int!){
     insert_requests_one(object: {species_name: $species, grid_id: $grid_id}) {
       request_id
+    }
+  }
+`;
+
+export const DELETE_REQUEST = gql`
+  mutation Delete_request ($request_id: Int!) {
+    delete_requests_by_pk(request_id: $request_id) {
+      request_id
+      done
+      grid_id
+      species_name
     }
   }
 `;
@@ -53,4 +64,3 @@ export const DONE_REQUEST = gql`
     }
   }
 `;
-

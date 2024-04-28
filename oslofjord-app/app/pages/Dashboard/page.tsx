@@ -4,7 +4,7 @@ import dynamic from "next/dynamic"
 import Dropdown from "@/app/components/Dropdown";
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import InfoIcon from '@mui/icons-material/Info';
-import { DONE_REQUEST, GET_INTERSECTION, GET_RESULTS, GET_SPECIES, INSERT_REQUEST } from "@/app/api/gqlQueries";
+import { DELETE_REQUEST, DONE_REQUEST, GET_INTERSECTION, GET_RESULTS, GET_SPECIES, INSERT_REQUEST } from "@/app/api/gqlQueries";
 import { twinQuestionList } from "@/app/utils/staticData/twinQuestions";
 
 // Next.js combined with leaflet can be problematic, so we need a dynamic loading
@@ -45,7 +45,8 @@ export default function Dashboard() {
     // Fetches result from the request
     const [getData] = useLazyQuery(GET_RESULTS)  
 
-    // MUTATION
+    // MUTATIONS
+    // inserts new request into request table
     const [insertReq] = useMutation(INSERT_REQUEST, {
         refetchQueries: [{query: DONE_REQUEST}],
         awaitRefetchQueries: true,
@@ -57,8 +58,13 @@ export default function Dashboard() {
         onError: (error) => {
           console.log(error); 
         },
-      }
-    );
+    });
+    // removes request after it is done (done variable in request table equals true)
+    const [deleteReq] = useMutation(DELETE_REQUEST, {
+        onError: (error) => {
+            console.log(error);
+        }
+    });
 
     async function refetchFunc(mutation : any) {
         let dataset
@@ -103,6 +109,7 @@ export default function Dashboard() {
         const request = await findMutation(request_id)
         const gridID : null | number = request == undefined ? null : await request.grid_id
         const result = await getData({variables: { "grid_id": gridID , "request_id": request_id}})
+        await deleteReq({ variables: { request_id: request_id }})
         //console.log('Results from final query', result)
         await displayResult(result)
     }
