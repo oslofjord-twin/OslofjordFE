@@ -5,8 +5,10 @@ import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { useAuth0 } from '@auth0/auth0-react';
 
+const graphqlHost = process.env.NEXT_PUBLIC_GRAPHQL_HOST || 'localhost';
+
 const httpLink = createHttpLink({
-  uri: 'http://localhost:8080/v1/graphql',
+  uri: `http://${graphqlHost}:8080/v1/graphql`,
 });
 
 const authLink = setContext(() => {
