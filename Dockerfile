@@ -15,6 +15,7 @@ COPY ./oslofjord-app/tsconfig.json .
 COPY ./oslofjord-app/tailwind.config.ts .
 COPY ./oslofjord-app/postcss.config.js .
 COPY ./oslofjord-app/next.config.js .
+COPY ./oslofjord-app/public ./public
 
 RUN npm run build
 
