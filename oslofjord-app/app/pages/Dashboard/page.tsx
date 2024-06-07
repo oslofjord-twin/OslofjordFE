@@ -4,7 +4,7 @@ import dynamic from "next/dynamic"
 import Dropdown from "@/app/components/Dropdown";
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import InfoIcon from '@mui/icons-material/Info';
-import { DELETE_REQUEST, DONE_REQUEST, GET_INTERSECTION, GET_RESULTS, GET_SPECIES, INSERT_REQUEST } from "@/app/api/gqlQueries";
+import { DELETE_REQUEST, DONE_REQUEST, GET_INTERSECTION, GET_RESULTS, GET_SPECIES, INSERT_REQUEST, GET_SIMUALTED_GRIDS } from "@/app/api/gqlQueries";
 import { twinQuestionList } from "@/app/utils/staticData/twinQuestions";
 
 // Next.js combined with leaflet can be problematic, so we need a dynamic loading
@@ -39,7 +39,9 @@ export default function Dashboard() {
     // Loads data from the API to make the grid rectangle using the GET_INTERSECTION query
     const { data: gridData } = useQuery(GET_INTERSECTION, {
         variables:  { point: { type: "Point", coordinates: [clickedPos.lng, clickedPos.lat] }},  //set which query to run here with variables
-    })  
+    }) 
+    const { data: simulatedGridData } = useQuery(GET_SIMUALTED_GRIDS, {
+    }) 
     // Fetches data about the request to runtime verification to see if results are ready 
     const { data, refetch } = useQuery(DONE_REQUEST)
     // Fetches result from the request
@@ -135,7 +137,7 @@ export default function Dashboard() {
                         className=" row-start-4 row-span-1 xl:col-start-4 xl:col-span-1 xl:place-self-end my-2 mr-4 w-24 h-12 rounded bg-blue-400 hover:bg-blue-500 disabled:bg-slate-300 text-lg"> Go </button>
                     </div>
                 </div>
-                <FjordMap gridData={gridData} landerPos={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos} dataReady={dataReady} setDataReady={setDataReady} displayData={displayData} setDisplayData={setDisplayData}></FjordMap>
+                <FjordMap gridData={gridData} simulatedGridData={simulatedGridData} landerPos={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos} dataReady={dataReady} setDataReady={setDataReady} displayData={displayData} setDisplayData={setDisplayData}></FjordMap>
                 <div className=" mt-8 p-4 bg-blue-200 w-2/3 xl:w-full h-fit mx-auto rounded-md self-center flex flex-row">
                     <InfoIcon className=" text-slate-700 ml-4 mr-4 self-start" fontSize="medium"></InfoIcon>
                     <p className="self-center"> 
