@@ -63,7 +63,7 @@ export default function Map(props : MapProps) {
             <MapEventsHandler></MapEventsHandler>
             {/* The rectangular area on the map that the coordinates fall within */}
             {props.gridData &&
-                <MapRectangle coordinates={props.gridData.grid[0].geom.coordinates[0]}/>
+                <MapRectangle fillColor='orange' color='orange' coordinates={props.gridData.grid[0].geom.coordinates[0]}/>
             }
         </MapContainer>
         {/* Displays the result from the request */}

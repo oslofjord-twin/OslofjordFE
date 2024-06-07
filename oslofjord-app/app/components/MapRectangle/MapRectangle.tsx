@@ -5,16 +5,18 @@ import { Rectangle } from 'react-leaflet'
 // Returns a single rectangle for the map, based on react-leaflet Rectangle. 
  
 interface RectangleProps {
-    coordinates: number [][]
+    coordinates: number [][];
+    fillColor: string;
+    color: string;
+
 }
 
 function MapRectangle(props: RectangleProps) {
     const boundaries : LatLngBoundsExpression = [[props.coordinates[0][1], props.coordinates[0][0]], [props.coordinates[1][1], props.coordinates[2][0]]]    
-    
     return (
         <Rectangle 
             bounds={boundaries}
-            pathOptions={ {fillColor:'red', fillOpacity: .2, color:'orange', opacity: .8}}
+            pathOptions={ {fillColor: props.fillColor, fillOpacity: .2, color:props.color, opacity: .8}}
         />
     )
 }
