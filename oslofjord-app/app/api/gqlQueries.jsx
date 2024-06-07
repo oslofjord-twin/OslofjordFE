@@ -64,3 +64,15 @@ export const DONE_REQUEST = gql`
     }
   }
 `;
+
+export const GET_SIMUALTED_GRIDS = gql`
+query SimulatedGridsQuery {
+  simulations(where: {changed: {_eq: true}}, distinct_on: grid_id) {
+    grid {
+      id
+      geom
+    }
+  }
+}
+
+`
