@@ -145,6 +145,9 @@ export default function Dashboard() {
                         When you are ready, click the &apos;Go&apos; button to get answers from the digital twin.
                     </p>
                 </div>
+                <div className="grid grid-rows-4 xl:grid-cols-4 p-2 place-items-center xl:place-items-baseline bg-slate-100 h-60 xl:h-20 w-2/3 mx-auto xl:w-full rounded-lg mt-10">
+
+                </div>
             </div>  
         </div>
     )
