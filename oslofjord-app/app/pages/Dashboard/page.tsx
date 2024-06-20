@@ -112,7 +112,6 @@ export default function Dashboard() {
         const gridID : null | number = request == undefined ? null : await request.grid_id
         const result = await getData({variables: { "grid_id": gridID , "request_id": request_id}})
         await deleteReq({ variables: { request_id: request_id }})
-        //console.log('Results from final query', result)
         await displayResult(result)
     }
 

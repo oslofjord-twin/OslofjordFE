@@ -74,5 +74,13 @@ query SimulatedGridsQuery {
     }
   }
 }
+`;
 
-`
+export const ANOXIC_BASIN_INTERSECTION = gql`
+query AnoxicBasinIntersection($grid: geometry!){
+  anoxic_basins(where: {area: {_st_intersects: $grid}}) {
+    basin_name 
+    depth
+  }
+}
+`;

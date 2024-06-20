@@ -2,9 +2,12 @@ import React from 'react'
 import { conductivityArray, findAverage, temperatureArray, turbidityArray } from "@/app/utils/functions/resultsFunctions"
 import { prefSpawningTempInfo, suitSpawningTempInfo, suitTempInfo } from "@/app/utils/staticData/resultsInfo"
 import SpeciesResults from '../SpeciesResults'
+import { ANOXIC_BASIN_INTERSECTION } from "@/app/api/gqlQueries";
+import {  useQuery } from '@apollo/client';
 
 interface ResultsDivProps {
-    displayData : any
+    displayData : any;
+    grid : any;
 }
 
   // Display data on suitable temperature, and suitable/preferred spawning temperatures 
@@ -31,6 +34,42 @@ export default function ResultsDiv(props: ResultsDivProps) {
     const temperature : number[] | null = simulations !== null && simulations.length !== 0 ? (
         temperatureArray(simulations, 24) == null ? null 
         : temperatureArray(simulations,24)) : null
+
+    function outputAnoxicBasins(basins : any[]) {
+      if (basins.length > 0) {
+        let basin_names = ""
+        let basin_depths = ""
+        for (var basin of basins) {
+            basin_names += basin.basin_name + " & "
+            basin_depths += basin.depth + "m & "
+        }
+        console.log(basins)
+        basin_names = basin_names.substring(0, basin_names.length - 3)
+        basin_depths = basin_depths.substring(0, basin_depths.length - 3)
+
+        return (
+          <div className='flex flex-col gap-1 mb-2 mt-2'> 
+          <p className=' font-semibold'> Anoxic Basin </p>
+          <p>Basin Name: {basin_names}</p>
+          <p>Depth: {basin_depths}</p>
+          </div>
+        )
+
+      } 
+
+    }
+
+    function checkAnoxicBasinIntersection (grid : any) {
+      console.log(grid)
+      const anoxicBasin = useQuery(ANOXIC_BASIN_INTERSECTION, {
+            variables:  { grid: grid },  //set which query to run here with variables
+        })
+
+      if (anoxicBasin.data) {
+        return outputAnoxicBasins(anoxicBasin.data.anoxic_basins)
+      }
+      return ""
+    }
   
 
     return (
@@ -61,6 +100,7 @@ export default function ResultsDiv(props: ResultsDivProps) {
             {turbidity !== null ? <p> Turbidity: {findAverage(turbidity).toFixed(2)} </p> : <p> Turbidity: Not available </p>}
             {temperature !== null ? <p> Temperature: {findAverage(temperature).toFixed(2)} </p> : <p> Temperature: Not available </p>} 
           </div>
+          {checkAnoxicBasinIntersection(props.grid)}
         </div>
         <div className='flex flex-col xl:flex-row gap-2 p-4 place-self-start bg-white border border-gray-200 '>
             <div className='p-2 w-6 h-6 grow-0 shrink-0 bg-green-600 rounded-full'/>

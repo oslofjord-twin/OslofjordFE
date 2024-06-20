@@ -14,7 +14,7 @@ function CircularLoader() {
     );
 }
 
-export default function ResultsWindow({setDataReady, displayData, setDisplayData}: any) {
+export default function ResultsWindow({setDataReady, displayData, setDisplayData, grid}: any) {
 
   const [shrinkWindow, setShrinkWindow] = useState(false)
   
@@ -27,7 +27,7 @@ export default function ResultsWindow({setDataReady, displayData, setDisplayData
             <div className='flex p-2 ml-2 mr-2' >
               {/* ResultsDiv displaying all information from the twin*/}
               {displayData !== undefined && 
-              <ResultsDiv displayData={displayData}></ResultsDiv>
+              <ResultsDiv displayData={displayData} grid={grid}></ResultsDiv>
               }
               <button className=' absolute z-0 bottom-0 right-0 mr-12 flex flex-row gap-4 w-fit h-fit  mb-8 rounded-lg' onClick={() => setShrinkWindow(true)}> 
                 <p className='w-fit h-fit invisible mb-2 xl:visible'> Show Map </p>
