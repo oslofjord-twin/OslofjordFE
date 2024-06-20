@@ -73,7 +73,7 @@ export default function Map(props : MapProps) {
         </MapContainer>
         {/* Displays the result from the request */}
         {props.dataReady == true &&
-            <ResultsWindow setDataReady={props.setDataReady} displayData={props.displayData} setDisplayData={props.setDisplayData}/>
+            <ResultsWindow setDataReady={props.setDataReady} displayData={props.displayData} grid={props.gridData.grid[0].geom} setDisplayData={props.setDisplayData}/>
         }
         </div>
     );
