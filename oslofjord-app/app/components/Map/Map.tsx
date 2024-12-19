@@ -62,10 +62,10 @@ export default function Map(props : MapProps) {
                 </Popup>
             </Circle>
             <MapEventsHandler></MapEventsHandler>
-            {
+            {/* {
                 props.simulatedGridData && props.simulatedGridData.simulations.map((simulation : any) =>
                     <MapRectangle key={simulation.grid.id} fillColor='yellow' color='yellow' coordinates={simulation.grid.geom.coordinates[0]} />)
-            }
+            } */}
             {/* The rectangular area on the map that the coordinates fall within */}
             {props.gridData &&
                 <MapRectangle fillColor='orange' color='orange' coordinates={props.gridData.grid[0].geom.coordinates[0]}/>
