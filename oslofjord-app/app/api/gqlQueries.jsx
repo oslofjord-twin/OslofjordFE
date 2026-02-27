@@ -79,8 +79,25 @@ query SimulatedGridsQuery {
 export const ANOXIC_BASIN_INTERSECTION = gql`
 query AnoxicBasinIntersection($grid: geometry!){
   anoxic_basins(where: {area: {_st_intersects: $grid}}) {
-    basin_name 
+    basin_name
     depth
   }
 }
+`;
+
+export const GET_SECCHI_DEPTH = gql`
+  query GetSecchiDepth($grid_id: Int!) {
+    secchi_depth(
+      where: { grid_id: { _eq: $grid_id } }
+      order_by: { record_time: desc }
+      limit: 10
+    ) {
+      id
+      record_time
+      depth_m
+      source
+      quality
+      note
+    }
+  }
 `;

@@ -2,16 +2,24 @@ import React from 'react'
 import { conductivityArray, findAverage, temperatureArray, turbidityArray } from "@/app/utils/functions/resultsFunctions"
 import { prefSpawningTempInfo, suitSpawningTempInfo, suitTempInfo } from "@/app/utils/staticData/resultsInfo"
 import SpeciesResults from '../SpeciesResults'
-import { ANOXIC_BASIN_INTERSECTION } from "@/app/api/gqlQueries";
+import { ANOXIC_BASIN_INTERSECTION, GET_SECCHI_DEPTH } from "@/app/api/gqlQueries";
 import {  useQuery } from '@apollo/client';
 
 interface ResultsDivProps {
     displayData : any;
     grid : any;
+    gridId? : number;
 }
 
-  // Display data on suitable temperature, and suitable/preferred spawning temperatures 
+  // Display data on suitable temperature, and suitable/preferred spawning temperatures
 export default function ResultsDiv(props: ResultsDivProps) {
+
+    // Query secchi depth data for this grid cell
+    const secchiQuery = useQuery(GET_SECCHI_DEPTH, {
+        variables: { grid_id: props.gridId },
+        skip: !props.gridId,
+    })
+    const secchiData = secchiQuery.data?.secchi_depth ?? []
 
     // check that simulations and runtime_monitoring contain data
     const simulations = props.displayData.data.simulations !== undefined ? props.displayData.data.simulations : null
@@ -101,6 +109,28 @@ export default function ResultsDiv(props: ResultsDivProps) {
             {temperature !== null ? <p> Temperature: {findAverage(temperature).toFixed(2)} </p> : <p> Temperature: Not available </p>} 
           </div>
           {checkAnoxicBasinIntersection(props.grid)}
+        </div>
+        {/* Citizen Science Secchi Depth Measurements */}
+        <div className='flex flex-col gap-1 p-2'>
+          <p className='font-semibold'>Secchi Depth (Citizen Science)</p>
+          {secchiData.length === 0 && <p className='text-sm text-gray-500'>No Secchi depth measurements for this grid cell</p>}
+          {secchiData.length > 0 && (
+            <div className='flex flex-col gap-1'>
+              <p>Latest: {secchiData[0].depth_m} m
+                {secchiData[0].quality != null && (
+                  <span className='text-sm text-gray-500'> (quality: {Number(secchiData[0].quality).toFixed(2)})</span>
+                )}
+              </p>
+              <p className='text-sm text-gray-500'>
+                {new Date(secchiData[0].record_time).toLocaleString()} &middot; {secchiData[0].source}
+              </p>
+              {secchiData.length > 1 && (
+                <p className='text-sm'>
+                  Average ({secchiData.length} measurements): {(secchiData.reduce((sum: number, s: any) => sum + Number(s.depth_m), 0) / secchiData.length).toFixed(2)} m
+                </p>
+              )}
+            </div>
+          )}
         </div>
         <div className='flex flex-col xl:flex-row gap-2 p-4 place-self-start bg-white border border-gray-200 '>
             <div className='p-2 w-6 h-6 grow-0 shrink-0 bg-green-600 rounded-full'/>
