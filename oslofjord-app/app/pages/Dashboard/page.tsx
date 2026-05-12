@@ -33,6 +33,8 @@ export default function Dashboard() {
     const [dataReady, setDataReady] = useState<boolean>(false)
     // sets any data that is ready for display, default is null
     const [displayData, setDisplayData] = useState(null)
+    // toggle for Secchi disk overlay on the map
+    const [showSecchi, setShowSecchi] = useState<boolean>(true)
     
   
     // QUERIES
@@ -132,11 +134,17 @@ export default function Dashboard() {
                     <div className="grid grid-rows-4 xl:grid-cols-4 p-2 place-items-center xl:place-items-baseline bg-slate-100 h-60 xl:h-20 w-2/3 mx-auto xl:w-full rounded-lg">
                     <Dropdown styling='absolute top-3 z-20 xl:z-30' list={twinQuestionList} query={GET_SPECIES} placeholder={'Choose a question ...'} setChosen={setChosenQuestion}/>
                     <Dropdown styling='absolute top-20 z-10 xl:top-3 xl:left-96 xl:ml-8' list={['null']} query={GET_SPECIES} placeholder={'Search for species ...'} setChosen={setChosenSpecies}/>
-                    <button onClick={() => makeRequest(gridData.grid[0].id, chosenSpecies.item)} disabled={chosenQuestion.item == '' || chosenSpecies.item == ''}
-                        className=" row-start-4 row-span-1 xl:col-start-4 xl:col-span-1 xl:place-self-end my-2 mr-4 w-24 h-12 rounded bg-blue-400 hover:bg-blue-500 disabled:bg-slate-300 text-lg"> Go </button>
+                    <div className=" row-start-4 row-span-1 xl:col-start-4 xl:col-span-1 xl:place-self-end my-2 mr-4 flex items-center gap-4">
+                        <label className=' flex items-center gap-2 text-sm text-slate-800 cursor-pointer select-none whitespace-nowrap'>
+                            <input type='checkbox' checked={showSecchi} onChange={(e) => setShowSecchi(e.target.checked)} className='w-4 h-4 accent-blue-500'/>
+                            Secchi
+                        </label>
+                        <button onClick={() => makeRequest(gridData.grid[0].id, chosenSpecies.item)} disabled={chosenQuestion.item == '' || chosenSpecies.item == '' || !gridData?.grid?.length}
+                            className=" w-24 h-12 rounded bg-blue-400 hover:bg-blue-500 disabled:bg-slate-300 text-lg"> Go </button>
+                    </div>
                     </div>
                 </div>
-                <FjordMap gridData={gridData} simulatedGridData={simulatedGridData} landerPos={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos} dataReady={dataReady} setDataReady={setDataReady} displayData={displayData} setDisplayData={setDisplayData}></FjordMap>
+                <FjordMap gridData={gridData} simulatedGridData={simulatedGridData} landerPos={landerPosition} clickedPos={clickedPos} setClickedPos={setClickedPos} dataReady={dataReady} setDataReady={setDataReady} displayData={displayData} setDisplayData={setDisplayData} showSecchi={showSecchi}></FjordMap>
                 <div className=" mt-8 p-4 bg-blue-200 w-2/3 xl:w-full h-fit mx-auto rounded-md self-center flex flex-row">
                     <InfoIcon className=" text-slate-700 ml-4 mr-4 self-start" fontSize="medium"></InfoIcon>
                     <p className="self-center"> 

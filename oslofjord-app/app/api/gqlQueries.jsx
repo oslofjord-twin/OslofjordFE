@@ -85,6 +85,24 @@ query AnoxicBasinIntersection($grid: geometry!){
 }
 `;
 
+export const GET_SECCHI_POINTS = gql`
+  query GetSecchiPoints {
+    secchi_depth(
+      where: { location: { _is_null: false } }
+      order_by: { record_time: desc }
+      limit: 200
+    ) {
+      id
+      record_time
+      depth_m
+      source
+      quality
+      note
+      location
+    }
+  }
+`;
+
 export const GET_SECCHI_DEPTH = gql`
   query GetSecchiDepth($grid_id: Int!) {
     secchi_depth(
